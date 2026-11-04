@@ -1,0 +1,410 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>애원복지 50호 웹진</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&display=swap">
+<style>
+/* 레이아웃: 왼쪽 고정 목차(책갈피) + 오른쪽 한 줄 스크롤 본문. 휴대폰에서는 목차가 서랍으로 열림 */
+:root {
+  --paper: #fbf6ef;
+  --paper-2: #f4ebdf;
+  --card: #ffffff;
+  --ink: #2f2620;
+  --muted: #6e6056;
+  --line: #e6d8c8;
+  --brick: #b4472f;      /* 애원복지 제호 색 */
+  --rose: #c8456a;       /* 꼭지 이름표 */
+  --moss: #4f7d35;       /* 제목 */
+  --amber: #d99a2b;
+  --shade: rgba(60, 35, 20, .08);
+  --scrim: rgba(30, 20, 14, .72);
+  --f-brand: "Gaegu", "Gowun Dodum", cursive;
+  --f-head: "Gowun Batang", "Noto Serif KR", "Nanum Myeongjo", serif;
+  --f-body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --fs: 18px;
+  --side: 288px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #1c1815; --paper-2: #24201b; --card: #29231e; --ink: #f1e8de; --muted: #b9aa9c; --line: #3d342c;
+    --brick: #e98a6c; --rose: #ef8aa6; --moss: #a5cc7c; --amber: #f0c06a; --shade: rgba(0,0,0,.35); --scrim: rgba(0,0,0,.85);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #1c1815; --paper-2: #24201b; --card: #29231e; --ink: #f1e8de; --muted: #b9aa9c; --line: #3d342c;
+  --brick: #e98a6c; --rose: #ef8aa6; --moss: #a5cc7c; --amber: #f0c06a; --shade: rgba(0,0,0,.35); --scrim: rgba(0,0,0,.85);
+  color-scheme: dark;
+}
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: var(--fs); line-height: 1.8; word-break: keep-all; overflow-wrap: anywhere; }
+body.big { --fs: 21px; }
+body.bigger { --fs: 24px; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 4px; }
+
+/* ---------- 사이드 목차 ---------- */
+.side {
+  position: fixed; inset: 0 auto 0 0; width: var(--side);
+  padding: calc(28px + env(safe-area-inset-top, 0px)) 22px calc(24px + env(safe-area-inset-bottom, 0px)) max(22px, env(safe-area-inset-left, 0px));
+  background: var(--paper-2); border-right: 1px solid var(--line);
+  overflow-y: auto; display: flex; flex-direction: column; gap: 18px; z-index: 30; font-size: 16px;
+}
+.brand { text-decoration: none; display: grid; gap: 2px; }
+.brand b { font-family: var(--f-brand); font-size: 44px; line-height: 1; color: var(--brick); letter-spacing: .02em; }
+.brand span { font-size: 13px; color: var(--muted); letter-spacing: .08em; }
+.nav { display: grid; gap: 14px; }
+.nav a { display: block; text-decoration: none; padding: 5px 10px; border-radius: 8px; color: var(--ink); line-height: 1.45; border-left: 3px solid transparent; }
+.nav a:hover { background: var(--card); }
+.nav a.on { background: var(--card); border-left-color: var(--brick); color: var(--brick); font-weight: 700; box-shadow: 0 1px 0 var(--shade); }
+.nav-label { margin: 0 0 4px; font-size: 13px; font-weight: 700; color: var(--rose); letter-spacing: .06em; }
+.nav-group { display: grid; gap: 2px; }
+.nav-top span { display: block; font-size: 13px; font-weight: 700; color: var(--rose); letter-spacing: .06em; }
+.nav-top.on span { color: var(--brick); }
+.nav-top small { font-size: 15px; }
+.nav-cover { font-weight: 700; }
+.tools { margin-top: auto; display: grid; gap: 8px; font-size: 14px; color: var(--muted); }
+.sizes { display: flex; gap: 6px; }
+.sizes button { flex: 1; font: inherit; font-family: var(--f-body); padding: 6px 0; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 8px; cursor: pointer; }
+.sizes button[aria-pressed="true"] { border-color: var(--brick); color: var(--brick); font-weight: 700; }
+.sizes button:nth-child(1) { font-size: 14px; } .sizes button:nth-child(2) { font-size: 17px; } .sizes button:nth-child(3) { font-size: 20px; }
+
+/* 휴대폰 상단 바 */
+.topbar { display: none; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper-2); }
+
+main { margin-left: var(--side); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 64px; }
+.wrap { max-width: 880px; margin: 0 auto; }
+
+/* ---------- 표지 ---------- */
+.cover { position: relative; margin: 24px auto 8px; max-width: 880px; border-radius: 22px; overflow: hidden; background: linear-gradient(180deg, #fdf0dd 0%, #f6dcc0 100%); color: #3a2a20; }
+:root[data-theme="dark"] .cover { background: linear-gradient(180deg, #3a2a1f 0%, #2a1e16 100%); color: #f6e7d6; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cover { background: linear-gradient(180deg, #3a2a1f 0%, #2a1e16 100%); color: #f6e7d6; } }
+.cover canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cover-in { position: relative; padding: clamp(28px, 6vw, 56px); display: grid; gap: 14px; }
+.vol { font-size: 15px; letter-spacing: .12em; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.vol i { font-style: normal; color: var(--brick); }
+.cover h1 { margin: 0; font-family: var(--f-brand); font-weight: 700; font-size: clamp(76px, 15vw, 150px); line-height: .95; color: var(--brick); }
+.slogan { margin: 0; font-family: var(--f-brand); font-size: clamp(26px, 4.6vw, 38px); line-height: 1.25; }
+.slogan span:first-child { color: var(--rose); } .slogan span:last-child { color: var(--moss); }
+.badge { justify-self: start; display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 16px; border-radius: 999px; background: var(--brick); color: #fff8f0; font-family: var(--f-head); font-weight: 700; font-size: 17px; }
+.badge b { font-size: 26px; }
+.teasers { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 0 clamp(20px, 5vw, 56px) clamp(24px, 5vw, 48px); }
+.teaser { text-decoration: none; display: grid; gap: 4px; color: inherit; }
+.teaser img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; border: 3px solid #fffaf3; box-shadow: 0 4px 14px rgba(80,40,10,.18); }
+.t-k { font-size: 13px; color: var(--rose); font-weight: 700; margin-top: 4px; }
+.t-t { font-family: var(--f-head); font-weight: 700; font-size: 15px; line-height: 1.4; }
+.publisher { position: relative; padding: 0 clamp(20px, 5vw, 56px) 24px; font-size: 14px; opacity: .85; }
+
+/* ---------- 본문 섹션 ---------- */
+.sec { max-width: 880px; margin: 0 auto; padding-block: 56px 8px; border-bottom: 1px dashed var(--line); }
+.sec-head { display: grid; gap: 10px; margin-bottom: 24px; }
+.kicker { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.kicker span:first-child { font-size: 14px; font-weight: 700; color: var(--rose); letter-spacing: .06em; padding: 0 10px; border-left: 3px solid var(--rose); border-right: 3px solid var(--rose); line-height: 1.2; }
+.pg { font-size: 13px; color: var(--muted); }
+.sec h2 { margin: 0; font-family: var(--f-head); font-weight: 700; font-size: clamp(26px, 3.6vw, 36px); line-height: 1.35; color: var(--moss); text-wrap: balance; }
+.sec .sub { margin: 0; color: var(--muted); font-size: .95em; }
+.sec h3 { font-family: var(--f-head); font-size: 1.25em; color: var(--rose); margin: 36px 0 8px; line-height: 1.4; text-wrap: balance; }
+.sec p { margin: 0 0 14px; max-width: 66ch; }
+.sec h4 { margin: 0; font-family: var(--f-head); font-size: 1.05em; line-height: 1.45; text-wrap: balance; }
+
+.ph { display: block; padding: 0; border: 0; background: var(--paper-2); cursor: zoom-in; width: 100%; border-radius: 12px; overflow: hidden; }
+.ph img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.ph:hover img { transform: scale(1.03); }
+@media (prefers-reduced-motion: reduce) { .ph img { transition: none; } .ph:hover img { transform: none; } }
+.gallery { display: grid; gap: 10px; margin: 16px 0 20px; }
+.gallery figure { margin: 0; display: grid; gap: 4px; min-width: 0; }
+.gallery .ph { aspect-ratio: 4/3; }
+.gallery figcaption { font-size: 14px; color: var(--muted); }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* 인사말 */
+.letters { display: grid; gap: 18px; }
+.letter { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 22px; padding: 22px; background: var(--card); border-radius: 16px; box-shadow: 0 1px 0 var(--line); }
+.letter:nth-child(even) { grid-template-columns: minmax(0, 1fr) 132px; }
+.letter:nth-child(even) .portrait { order: 2; }
+.portrait .ph { aspect-ratio: 3/4; border-radius: 10px; }
+.letter-body p { margin-bottom: 10px; }
+.sign { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; justify-content: flex-end; font-size: .9em; color: var(--muted); }
+.sign strong { font-family: var(--f-head); font-size: 1.2em; color: var(--ink); }
+
+/* 테마기획 */
+.lead-split { display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 24px; align-items: start; }
+.poster { margin: 0; }
+.poster .ph { aspect-ratio: 1/3; }
+.poster .ph img { object-fit: contain; background: var(--paper-2); }
+.quote { margin: 28px 0 8px; padding: 26px 28px; background: var(--card); border-radius: 16px; position: relative; }
+.quote::before { content: "“"; position: absolute; top: -18px; left: 18px; font-family: var(--f-head); font-size: 80px; line-height: 1; color: var(--amber); }
+.quote p { font-family: var(--f-head); font-size: 1.1em; line-height: 1.8; margin: 0 0 8px; }
+.quote cite { font-style: normal; font-size: .85em; color: var(--muted); }
+
+/* 화보 카드 */
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.card { background: var(--card); border-radius: 16px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; box-shadow: 0 1px 0 var(--line); min-width: 0; }
+.card .ph { aspect-ratio: 4/3; border-radius: 0; }
+.card-body { padding: 16px 18px 6px; display: grid; gap: 8px; align-content: start; }
+.card-body p { font-size: .9em; line-height: 1.75; }
+.daycare { margin-top: 28px; }
+.dc-name { display: inline-block; margin: 0 0 12px !important; padding: 2px 14px; border-radius: 999px; background: var(--card); color: var(--brick) !important; font-size: 1.05em !important; }
+.mini-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.mini { display: grid; gap: 6px; align-content: start; min-width: 0; }
+.mini .ph { aspect-ratio: 4/3; }
+.mini h4 { color: var(--moss); }
+.mini p { font-size: .88em; line-height: 1.7; margin: 0; }
+
+/* 홍보 */
+.promo { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 24px; align-items: start; }
+.promo-img { margin: 0; }
+.promo-img .ph { aspect-ratio: 1/1; }
+.promo-img.tall .ph { aspect-ratio: 793/1123; }
+.promo-img.tall .ph img { object-fit: contain; }
+.promo-gap { height: 36px; }
+.infobox { margin: 8px 0 12px; padding: 18px 20px; background: var(--card); border-radius: 14px; display: grid; gap: 10px; border: 1px solid var(--line); }
+.ib-row { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 12px; }
+.ib-row dt { font-weight: 700; color: var(--brick); }
+.ib-row dd { margin: 0; }
+.ib-row.contact { padding-top: 10px; border-top: 1px dashed var(--line); }
+
+/* 인터뷰 */
+.wide { margin: 0 0 20px; }
+.wide .ph { aspect-ratio: 16/10; }
+.qa { display: grid; gap: 20px; }
+.qa-item p { display: grid; grid-template-columns: 2em minmax(0, 1fr); margin: 0 0 6px; }
+.qa-item b { font-family: var(--f-head); font-size: 1.2em; }
+.q { font-weight: 700; color: var(--moss); }
+.q b { color: var(--moss); }
+.a b { color: var(--brick); }
+.place { margin-top: 20px !important; padding: 14px 18px; background: var(--card); border-radius: 12px; font-size: .9em; }
+.place strong { color: var(--brick); margin-right: 8px; }
+
+/* 후원 */
+.donors { display: grid; gap: 10px; }
+.donor-group { background: var(--card); border-radius: 12px; padding: 12px 18px; border: 1px solid var(--line); }
+.donor-group summary { cursor: pointer; display: flex; justify-content: space-between; gap: 12px; font-weight: 700; color: var(--brick); }
+.donor-group summary em { font-style: normal; font-weight: 400; color: var(--muted); font-size: .85em; }
+.names { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 10px 0 4px !important; font-size: .9em; max-width: none !important; }
+.note { font-size: .88em; color: var(--muted); }
+.tbl { overflow-x: auto; margin: 6px 0 16px; border-radius: 12px; border: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .88em; background: var(--card); }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+thead th { background: var(--paper-2); color: var(--brick); font-weight: 700; white-space: nowrap; }
+tfoot td { font-weight: 700; background: var(--paper-2); }
+.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.kinds { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.kind { background: var(--card); border-radius: 12px; padding: 14px 16px; border-top: 3px solid var(--amber); }
+.kind h4 { color: var(--brick); margin-bottom: 4px; }
+.kind p { font-size: .86em; line-height: 1.65; margin: 0; }
+.accounts { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.accounts li { display: grid; grid-template-columns: 5.5em auto minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 14px; background: var(--card); border-radius: 10px; }
+.bank { font-weight: 700; }
+.acct { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--brick); }
+.holder { font-size: .85em; color: var(--muted); }
+.copy { font: inherit; font-size: 14px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); cursor: pointer; white-space: nowrap; }
+
+/* 자원봉사 */
+.steps { list-style: none; counter-reset: s; padding: 0; margin: 10px 0 20px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.steps li { counter-increment: s; background: var(--card); border-radius: 12px; padding: 12px; text-align: center; display: grid; gap: 4px; font-size: .9em; line-height: 1.45; }
+.steps li::before { content: counter(s); justify-self: center; width: 28px; height: 28px; border-radius: 50%; background: var(--moss); color: var(--paper); font-weight: 700; display: grid; place-items: center; font-size: 15px; }
+.vols { display: grid; gap: 8px; margin: 8px 0 20px; }
+.vols div { display: grid; grid-template-columns: 11em minmax(0, 1fr); gap: 12px; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+.vols dt { font-weight: 700; color: var(--moss); }
+.vols dd { margin: 0; }
+.notice { padding: 16px 20px; border-radius: 12px; background: var(--paper-2); border: 1px solid var(--line); font-size: .88em; }
+.notice h4 { color: var(--brick); margin-bottom: 8px; }
+
+/* 애원뉴스 */
+.newslist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.nl { background: var(--card); border-radius: 14px; padding: 16px 20px; }
+.nl h3 { margin: 0 0 6px !important; }
+.nl ul { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; font-size: .92em; }
+
+/* 주요사업 */
+.search { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+.search span { font-weight: 700; color: var(--brick); }
+.search input { flex: 1; min-width: 0; font: inherit; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+.programs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.prog { background: var(--card); border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.prog h4 { color: var(--moss); }
+.prog dl { margin: 0; display: flex; gap: 6px 16px; flex-wrap: wrap; font-size: .82em; }
+.prog dl div { display: flex; gap: 6px; }
+.prog dt { color: var(--rose); font-weight: 700; }
+.prog dd { margin: 0; color: var(--muted); }
+.prog p { font-size: .88em; line-height: 1.65; margin: 0; }
+.empty { color: var(--muted); }
+
+/* 발행정보 */
+.colophon { max-width: 880px; margin: 40px auto 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; font-size: 14px; color: var(--muted); line-height: 1.75; }
+.colophon h2 { font-family: var(--f-brand); font-size: 30px; color: var(--brick); margin: 0 0 6px; }
+.colophon p { margin: 0; }
+.colophon b { color: var(--ink); }
+
+/* 사진 크게 보기 */
+.lb { position: fixed; inset: 0; z-index: 50; background: var(--scrim); display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.lb img { max-width: 100%; max-height: 86vh; border-radius: 8px; }
+.lb button { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); right: calc(12px + env(safe-area-inset-right, 0px)); font: inherit; font-size: 16px; padding: 8px 16px; border-radius: 999px; border: 0; background: #fff; color: #222; cursor: pointer; }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 8px 18px; border-radius: 999px; font-size: 15px; z-index: 60; }
+.scrim { display: none; }
+
+/* ---------- 반응형 ---------- */
+@media (max-width: 960px) {
+  .side { transform: translateX(-100%); transition: transform .25s; box-shadow: 8px 0 24px var(--shade); width: min(300px, 86vw); }
+  body.nav-open .side { transform: none; }
+  body.nav-open .scrim { display: block; position: fixed; inset: 0; background: var(--scrim); z-index: 25; }
+  main { margin-left: 0; }
+  .topbar { display: flex; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; align-items: center; justify-content: space-between; gap: 12px; margin: 0 calc(-1 * max(16px, env(safe-area-inset-right, 0px))) 0 calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding: 8px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); background: var(--paper-2); border-bottom: 1px solid var(--line); }
+  .topbar b { font-family: var(--f-brand); font-size: 28px; color: var(--brick); line-height: 1; }
+  .topbar small { font-size: 13px; color: var(--muted); margin-left: 6px; }
+  .topbar button { font: inherit; font-size: 16px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  html { scroll-padding-top: 64px; }
+}
+@media (max-width: 960px) and (prefers-reduced-motion: reduce) { .side { transition: none; } }
+@media (max-width: 720px) {
+  :root { --fs: 17px; }
+  .teasers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .letter, .letter:nth-child(even) { grid-template-columns: 84px minmax(0, 1fr); gap: 14px; padding: 16px; }
+  .letter:nth-child(even) .portrait { order: 0; }
+  .lead-split, .promo { grid-template-columns: minmax(0, 1fr); }
+  .poster { max-width: 200px; }
+  .promo-img { max-width: 320px; }
+  .cards, .newslist, .programs, .colophon { grid-template-columns: minmax(0, 1fr); }
+  .mini-cards { grid-template-columns: minmax(0, 1fr); }
+  .mini { grid-template-columns: 120px minmax(0, 1fr); column-gap: 12px; }
+  .mini .ph { grid-row: span 2; }
+  .g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g3 figure:first-child { grid-column: span 2; }
+  .kinds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .steps li { grid-template-columns: 28px minmax(0, 1fr); text-align: left; align-items: center; gap: 12px; }
+  .accounts li { grid-template-columns: minmax(0, 1fr) auto; }
+  .accounts .holder { grid-column: 1 / -1; order: 3; }
+  .vols div, .ib-row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
+</style>
+
+<div class="scrim" id="scrim"></div>
+<aside class="side" id="side" aria-label="소식지 목차">
+  <a class="brand" href="#cover"><b>애원복지</b><span>2021 가을 · 통권 제50호</span></a>
+  <nav class="nav" id="nav"><a class="nav-cover" href="#cover">표지</a><div class="nav-group"><a class="nav-top" href="#greeting"><span>인사말</span><small>창간 25주년 축하 인사</small></a></div><div class="nav-group"><p class="nav-label">테마기획사업</p><a href="#theme1">리조이스 마음돌봄 프로그램</a><a href="#theme2">평생학습사업</a></div><div class="nav-group"><p class="nav-label">화보NEWS</p><a href="#news-service">서비스팀 소식</a><a href="#news-case">사례팀 소식</a><a href="#news-community">지역복지팀 소식</a><a href="#news-admin">운영지원팀·애원희망홈 소식</a><a href="#news-daycare">어린이집 소식</a></div><div class="nav-group"><p class="nav-label">신내 정보통</p><a href="#info-flex">창의력Flex</a><a href="#info-udan">우.단학교</a><a href="#info-meet">주민만나기</a></div><div class="nav-group"><p class="nav-label">홍보</p><a href="#promo-1">작은영화관 · 돌봄SOS센터</a><a href="#promo-2">희망온돌 · 맘편한공부방</a></div><div class="nav-group"><p class="nav-label">함께하는 사람들</p><a href="#people">기부자 인터뷰 · 삼송한의원</a><a href="#support">후원 안내</a><a href="#volunteer">자원봉사 안내</a></div><div class="nav-group"><a class="nav-top" href="#aewon-news"><span>애원뉴스</span><small>재단 · 시설 · 직원 소식</small></a></div><div class="nav-group"><a class="nav-top" href="#programs-2021"><span>주요사업 안내</span><small>2021년 주요사업</small></a></div></nav>
+  <div class="tools">
+    <span id="size-label">글자 크기</span>
+    <div class="sizes" role="group" aria-labelledby="size-label">
+      <button type="button" id="fs-0" data-size="0" aria-pressed="true">보통</button>
+      <button type="button" id="fs-1" data-size="1" aria-pressed="false">크게</button>
+      <button type="button" id="fs-2" data-size="2" aria-pressed="false">아주 크게</button>
+    </div>
+  </div>
+</aside>
+
+<main>
+  <div class="topbar"><span><b>애원복지</b><small>제50호</small></span><button type="button" id="menu-btn" aria-controls="side" aria-expanded="false">목차</button></div>
+
+  <section class="cover" id="cover" aria-label="표지">
+    <canvas id="leaves" aria-hidden="true"></canvas>
+    <div class="cover-in">
+      <p class="vol"><span>2021 AUTUMN</span><i>●</i><span>VOL. 50</span></p>
+      <h1>애원복지</h1>
+      <p class="slogan"><span>따뜻한 서비스</span><br><span>건강한 공동체</span></p>
+      <p class="badge">창간 <b>25</b>주년 · 50호 발간</p>
+    </div>
+    <div class="teasers"><a class="teaser" href="#theme1"><img src="img/BIN0035.jpg" alt="" loading="lazy"><span class="t-k">테마기획 1</span><span class="t-t">빛나는 당신을 위해, 리조이스 마음돌봄</span></a><a class="teaser" href="#theme2"><img src="img/BIN003F.jpg" alt="" loading="lazy"><span class="t-k">테마기획 2</span><span class="t-t">평생학습사업, 내가 그린 지구</span></a><a class="teaser" href="#news-daycare"><img src="img/BIN0021.jpg" alt="" loading="lazy"><span class="t-k">화보NEWS</span><span class="t-t">여섯 어린이집의 여름 이야기</span></a><a class="teaser" href="#people"><img src="img/BIN0011.jpg" alt="" loading="lazy"><span class="t-k">함께하는 사람들</span><span class="t-t">삼송한의원 박철 원장 인터뷰</span></a></div>
+    <p class="publisher">사회복지법인 애원복지재단 · 신내종합사회복지관</p>
+  </section>
+
+  <section class="sec" id="greeting" data-group="인사말"><header class="sec-head"><div class="kicker"><span>인사말</span><span class="pg">지면 3</span></div><h2>애원복지 창간 25주년, 50호를 축하합니다</h2><p class="sub">1996년 12월 창간호부터 25년, 함께해 주신 분들이 축하의 마음을 보내 주셨습니다.</p></header><div class="letters"><article class="letter"><div class="portrait"><button class="ph" type="button" data-full="img/BIN0012.jpg" aria-label="사진 크게 보기: 김택구"><img src="img/BIN0012.jpg" alt="김택구" loading="lazy"></button></div><div class="letter-body"><p>안녕하십니까? 1996년 12월 애원복지 창간호를 발간했던 기억이 주마등처럼 지나갑니다. 애원복지에는 25년 동안 우리 지역주민과 함께 어우러져 산 아름다운 역사가 고스란히 녹아 있습니다. 이번 애원복지 50호 발간을 진심으로 축하드리며, 앞으로 나아갈 또 다른 출발점이 되어 지역 주민의 복지 증진을 위한 지렛대 역할을 수행하여 주시기 바랍니다. 감사합니다.</p><p class="sign"><span>신내종합사회복지관 1대 관장</span><strong>김택구</strong></p></div></article><article class="letter"><div class="portrait"><button class="ph" type="button" data-full="img/BIN000F.jpg" aria-label="사진 크게 보기: 한종병"><img src="img/BIN000F.jpg" alt="한종병" loading="lazy"></button></div><div class="letter-body"><p>반갑습니다. 신내종합사회복지관에서 1999년 처음 봉사단 활동을 시작 한지 20년이 훌쩍 지났습니다. 신내종합사회복지관이 지금까지 지역의 거점 복지관으로써 많은 성장한 것을 볼 때 감개가 무량합니다. 50호 발간까지 관장님과 직원들의 땀과 열정이 묻어 있는 애원복지를 통해 봉사단 회장으로서의 막중한 책임감도 느낍니다. 하루빨리 코로나19 바이러스가 종식되어 장애인분들과 함께 활동하길 간절히 바랍니다. 애원복지 50호 발간을 진심으로 축하드립니다. 감사합니다.</p><p class="sign"><span>장애인국토순례봉사단 회장</span><strong>한종병</strong></p></div></article><article class="letter"><div class="portrait"><button class="ph" type="button" data-full="img/BIN0010.jpg" aria-label="사진 크게 보기: 남석하"><img src="img/BIN0010.jpg" alt="남석하" loading="lazy"></button></div><div class="letter-body"><p>신내종합사회복지관 애원복지 50호 발간을 진심으로 축하드립니다. 또한 지역사회 발전을 위해 노력하시는 관장님과 직원 여러분에게 감사를 드립니다. 저는 망우동에서 붕어빵 장사와 공공근로를 하며 신내종합 사회복지관에 오랫동안 기부를 하고 있습니다. 복지관은 정부에서 주는 예산만으로는 100% 운영하기 어렵습니다. 후원자님들의 조그마한 손길로 저와 같이 동참하셔서 지역사회 발전을 위해 함께 나아갔으면 좋겠습니다. 다시 한 번 50호 발간을 축하드립니다.</p><p class="sign"><span>신내종합사회복지관 정기후원자</span><strong>남석하</strong></p></div></article><article class="letter"><div class="portrait"><button class="ph" type="button" data-full="img/BIN0013.jpg" aria-label="사진 크게 보기: 한기홍"><img src="img/BIN0013.jpg" alt="한기홍" loading="lazy"></button></div><div class="letter-body"><p>신내종합사회복지관과 함께 울고 웃으며 12단지아파트에서 동거 동락 한지 벌써 20여년이 훌쩍 지났습니다. 장애인을 포함한 우리 지역주민의 복지증진을 위해 노력해주신 신내종합사회복지관의 무궁한 발전을 기원하며 애원복지 창간 25주년을 축하드립니다.</p><p class="sign"><span>장애인자조모임 「거송회」 회장</span><strong>한기홍</strong></p></div></article><article class="letter"><div class="portrait"><button class="ph" type="button" data-full="img/BIN0014.jpg" aria-label="사진 크게 보기: 윤성민"><img src="img/BIN0014.jpg" alt="윤성민" loading="lazy"></button></div><div class="letter-body"><p>지역사회의 다양한 프로그램 운영과 사회적 통합과 건강한 공동체를 구현하고자 최선을 다해주신 열정과 희망의 소식들이 담긴 이야기 ‘애원복지’ 창간 25주년 50호 발간을 진심으로 축하드립니다.</p><p class="sign"><span>신내12단지 임차인대표 회장</span><strong>윤성민</strong></p></div></article></div></section><section class="sec" id="theme1" data-group="테마기획사업"><header class="sec-head"><div class="kicker"><span>테마기획사업 1</span><span class="pg">지면 4–5</span></div><h2>빛나는 당신을 위해, 리조이스 마음돌봄 프로그램</h2></header><div class="lead-split"><div><p>2021년 4월부터 6월까지 복지관에서는 여성의 행복한 삶과 자존감 향상을 위한 리조이스 마음돌봄 프로그램(기아대책 지원, ㈜롯데쇼핑 후원)을 진행하였다.</p><p>‘리조이스’는 2017년부터 롯데백화점이 진행하고 있는 사회공헌 캠페인으로, 고객과 임직원 70%가 여성이라는 점에서 착안해 시작됐다.</p><p>코로나19의 장기화로 일상의 큰 변화와 제약이 생기면서 코로나 블루를 느끼는 여성들과 양육 스트레스 여성, 나를 찾고 자존감을 높이고자 하는 20~50대 여성들이 복지관을 찾았다.</p></div><figure class="poster"><button class="ph" type="button" data-full="img/BIN002F.jpg" aria-label="사진 크게 보기: 리조이스 마음돌봄 프로그램 홍보 포스터"><img src="img/BIN002F.jpg" alt="리조이스 마음돌봄 프로그램 홍보 포스터" loading="lazy"></button></figure></div><h3>공감으로 다시 피어나는 꽃 『공감 꽃』</h3><p>리조이스 마음돌봄 프로그램에서는 매주 1회 공감과 소통을 기반으로 하는 소그룹 집단상담 ‘공감 꽃’ 프로그램이 진행됐다. 미술치료, 보드게임, 감정코칭, 심리상담 등을 통해 일과 양육, 스트레스로부터 온전한 나 자신을 다시 피어낼 수 있는 힘을 얻었다.</p><div class="gallery g3"><figure><button class="ph" type="button" data-full="img/BIN0030.jpg" aria-label="사진 크게 보기: 공감 꽃 프로그램"><img src="img/BIN0030.jpg" alt="공감 꽃 프로그램" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0031.jpg" aria-label="사진 크게 보기: 공감 꽃 프로그램"><img src="img/BIN0031.jpg" alt="공감 꽃 프로그램" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0032.jpg" aria-label="사진 크게 보기: 공감 꽃 프로그램"><img src="img/BIN0032.jpg" alt="공감 꽃 프로그램" loading="lazy"></button></figure></div><h3>마음을 꼭 안아주는 『마음 꼭』</h3><p>‘마음 꼭’ 프로그램에서는 참여자 및 주변 관계인을 초대하여 우울에 대한 인식개선과 예방에 대한 교육을 진행하였다. 우울에 대한 올바른 이해로 나 자신 그리고 주변인들의 우울에 어떻게 대처해야 하는지 나누고 서로의 마음을 안아주는 시간을 가졌다.</p><div class="gallery g2"><figure><button class="ph" type="button" data-full="img/BIN0033.jpg" aria-label="사진 크게 보기: 마음 꼭 프로그램"><img src="img/BIN0033.jpg" alt="마음 꼭 프로그램" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0034.jpg" aria-label="사진 크게 보기: 마음 꼭 프로그램"><img src="img/BIN0034.jpg" alt="마음 꼭 프로그램" loading="lazy"></button></figure></div><h3>빛나는 당신을 위한 『빛나는 수료식』</h3><p>‘빛나는 수료식’에서는 프로그램을 돌아보는 시간 ‘우리가 빛내온 길’과 서로에게 고마운 마음을 표현하는 ‘당신 덕분입니다’ 코너가 진행되었다. 또한 감정코칭 교육 과정을 수료한 16명의 참여자에게 수료증이 수여되어 반짝 반짝 빛날 앞날을 함께 응원해 주는 시간을 가졌다.</p><div class="gallery g3"><figure><button class="ph" type="button" data-full="img/BIN0035.jpg" aria-label="사진 크게 보기: 빛나는 수료식"><img src="img/BIN0035.jpg" alt="빛나는 수료식" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0036.jpg" aria-label="사진 크게 보기: 빛나는 수료식"><img src="img/BIN0036.jpg" alt="빛나는 수료식" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0037.jpg" aria-label="사진 크게 보기: 빛나는 수료식"><img src="img/BIN0037.jpg" alt="빛나는 수료식" loading="lazy"></button></figure></div><blockquote class="quote"><p>내가 나 스스로를 감싸고 칭찬하는 게 부족했다는 것을 알았어요. 마음돌봄 프로그램을 통해 내 자신이 변해가는 것을 많이 느꼈고 나의 행복이 얼마나 중요한지 배웠기 때문에 도움이 필요한 사람들에게 적극 추천해주고 싶어요.</p><cite>리조이스 참여자 인터뷰 중에서</cite></blockquote></section><section class="sec" id="theme2" data-group="테마기획사업"><header class="sec-head"><div class="kicker"><span>테마기획사업 2</span><span class="pg">지면 6–7</span></div><h2>지역 주민 삶의 질 향상을 위한 평생학습사업</h2><p class="sub">신내종합사회복지관에서는 지역 주민의 삶의 질 향상과 평생학습 기회를 확대하고자 다양한 평생교육 프로그램을 운영하고 있다.</p></header><h3>쏙쏙 동네배움터</h3><p>2021년 한걸음에 닿는 동네배움터 운영사업에 선정되어 상봉1동 ‘쏙쏙 동네배움터’로 지역 주민을 위한 6개의 교육 프로그램과 2개의 학습-실천 프로젝트를 운영 중에 있다.</p><p>상반기에는 ‘비움의 즐거움 정리수납’, ‘재미로 듣는 한여름 밤의 역사 이야기’를 진행하였다. 정리수납 교육은 이론과 실습을 함께 진행하여 수강생들이 적극적으로 참여하였으며 비움의 즐거움을 느낄 수 있는 유익한 교육이었다. 한여름 밤의 역사 이야기는 숨겨진 비화를 중심으로 조선의 역사를 배울 수 있어 수강생들이 역사에 흥미를 가질 수 있었다.</p><div class="gallery g3"><figure><button class="ph" type="button" data-full="img/BIN0038.jpg" aria-label="사진 크게 보기: 비움의 즐거움 정리수납"><img src="img/BIN0038.jpg" alt="비움의 즐거움 정리수납" loading="lazy"></button><figcaption>비움의 즐거움 정리수납</figcaption></figure><figure><button class="ph" type="button" data-full="img/BIN0039.jpg" aria-label="사진 크게 보기: 비움의 즐거움 정리수납"><img src="img/BIN0039.jpg" alt="비움의 즐거움 정리수납" loading="lazy"></button><figcaption>비움의 즐거움 정리수납</figcaption></figure><figure><button class="ph" type="button" data-full="img/BIN003A.jpg" aria-label="사진 크게 보기: 한여름 밤의 역사이야기"><img src="img/BIN003A.jpg" alt="한여름 밤의 역사이야기" loading="lazy"></button><figcaption>한여름 밤의 역사이야기</figcaption></figure></div><p>하반기에는 ‘직접 만들어보는 라탄 소품’, ‘쉽게 만드는 앙금플라워 떡 케이크’, ‘친환경 업사이클링 공예 에코 크래프트’, ‘쉽게 알아보는 재테크 교육’이 진행될 예정이다.</p><p>이 외에도 배운 내용을 지역사회에 환원하는 학습-실천 프로젝트로 정리수납이 필요한 어르신의 가정을 정리하는 ‘함께하는 정리수납’, 이웃에게 떡 케이크를 나누며 따뜻한 마음을 전하는 ‘이웃과 나누는 앙금플라워 떡 케이크’를 계획하고 있다. 교육 참여 후 배움을 나누는 활동을 통해 지역 주민의 사회참여 기회를 확대하고 이를 통한 자아실현의 기회를 제공하고자 한다.</p><h3>내가 그린 지구</h3><p>평생학습관 운영지원사업 프로그램으로 다음 세대를 위한 지구, 지속 가능한 환경을 위한 환경보호 실천 교육 ‘내가 그린 지구’를 운영 중에 있다.</p><div class="gallery g4"><figure><button class="ph" type="button" data-full="img/BIN003B.jpg" aria-label="사진 크게 보기: 내가 그린 지구"><img src="img/BIN003B.jpg" alt="내가 그린 지구" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN003C.jpg" aria-label="사진 크게 보기: 내가 그린 지구"><img src="img/BIN003C.jpg" alt="내가 그린 지구" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN003D.jpg" aria-label="사진 크게 보기: 내가 그린 지구"><img src="img/BIN003D.jpg" alt="내가 그린 지구" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN003E.jpg" aria-label="사진 크게 보기: 내가 그린 지구"><img src="img/BIN003E.jpg" alt="내가 그린 지구" loading="lazy"></button></figure></div><p>기후 위기, 환경을 지키는 먹거리, 분리배출 등과 관련된 이론 교육과 함께 플라스틱 튜브 없는 천연 치약, 비닐봉지를 대체할 수 있는 천 주머니, 플라스틱 용기 없는 샴푸바를 직접 만들어보는 실습 교육을 진행하였다. 교육을 통해 환경보호 실천의 중요성과 환경을 위해 불편함을 감수하는 것이 필요함을 배울 수 있었다.</p><h3>우리가 그린 지구</h3><p>‘내가 그린 지구’ 교육 후 동아리 활동을 원하는 수강생들을 모집하여 학습동아리 ‘우리가 그린 지구’를 운영하였다. 심화 교육과 함께 버려지는 페트병과 박스를 활용하여 EM발효액 나눔 캠페인을 진행하였다. 캠페인을 통해 환경보호 실천을 알리는 의미 있는 시간이었다.</p><div class="gallery g3"><figure><button class="ph" type="button" data-full="img/BIN003F.jpg" aria-label="사진 크게 보기: 우리가 그린 지구"><img src="img/BIN003F.jpg" alt="우리가 그린 지구" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0040.jpg" aria-label="사진 크게 보기: 우리가 그린 지구"><img src="img/BIN0040.jpg" alt="우리가 그린 지구" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0041.jpg" aria-label="사진 크게 보기: 우리가 그린 지구"><img src="img/BIN0041.jpg" alt="우리가 그린 지구" loading="lazy"></button></figure></div></section><section class="sec" id="news-service" data-group="화보NEWS"><header class="sec-head"><div class="kicker"><span>화보NEWS 1</span><span class="pg">지면 8</span></div><h2>서비스팀 소식</h2></header><div class="cards"><article class="card"><button class="ph" type="button" data-full="img/BIN0003.jpg" aria-label="사진 크게 보기: 뉴노멀시대보고서 ‘해보고서’ 우리동네설명서 영상 제작"><img src="img/BIN0003.jpg" alt="뉴노멀시대보고서 ‘해보고서’ 우리동네설명서 영상 제작" loading="lazy"></button><div class="card-body"><h4>뉴노멀시대보고서 ‘해보고서’ 우리동네설명서 영상 제작</h4><p>코로나 시대에 발맞춰 미디어 활용 역량 향상을 지원하기 위해, 1월 ~ 5월까지 중랑구 중학생들에게 사진‧영상 촬영 및 영상 편집 프로그램 사용 교육을 진행하고, 중랑구 곳곳을 소개하는 ‘우리동네설명서’ 영상을 제작하였다. 본 프로그램을 통해 미디어 활용 역량 향상과 더불어 우리 동네에 많은 관심과 애정을 가지게 되는 시간이 되었다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN0007.jpg" aria-label="사진 크게 보기: 2021년 교육복지협력사업 ‘온(On-溫)스테이’"><img src="img/BIN0007.jpg" alt="2021년 교육복지협력사업 ‘온(On-溫)스테이’" loading="lazy"></button><div class="card-body"><h4>2021년 교육복지협력사업 ‘온(On-溫)스테이’</h4><p>‘온(On-溫)스테이’ 사업은 초등학교 1~3학년 자녀를 대상으로 매주 1회 푸드아트테라피 수업을 진행하고 있으며, 월 1회 가족 활동으로 가족 푸드아트테라피 수업, 밀키트 만들기 등 활동을 진행하였다. 자녀와 가족 프로그램을 진행하여 가정의 원활한 의사소통을 도모하고, 가족 관계를 증진 시키고자 한다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN0005.jpg" aria-label="사진 크게 보기: 치매예방사업 ‘기억하기좋은날’"><img src="img/BIN0005.jpg" alt="치매예방사업 ‘기억하기좋은날’" loading="lazy"></button><div class="card-body"><h4>치매예방사업 ‘기억하기좋은날’</h4><p>치매예방사업 ‘기억하기좋은날’은 카카오 같이가치 프로젝트 모금으로 운영되었다. 지역 내 어르신들을 대상으로 치매예방교육, 원예, 두뇌훈련, 보드게임을 통해 치매에 대한 올바른 인식과 예방을 위한 프로그램을 진행했다. 이번 프로그램을 계기로 지역에 치매예방 문화 확산의 발판을 마련할 수 있었으며 앞으로도 치매로부터 안전한 지역사회를 만들고자 한다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN0004.jpg" aria-label="사진 크게 보기: 장애인 평생교육 ‘예쁜공방’-우드버닝교실 운영"><img src="img/BIN0004.jpg" alt="장애인 평생교육 ‘예쁜공방’-우드버닝교실 운영" loading="lazy"></button><div class="card-body"><h4>장애인 평생교육 ‘예쁜공방’-우드버닝교실 운영</h4><p>예쁜공방에서는 장애성인의 평생교육권을 보장하고 사회참여 증진을 위해 주 1회 공방수업이 운영된다. 그 중 우드버닝은 나무를 인두로 태워 작품을 완성하는 활동으로 빵도마, 수납함, 목간, 핸드폰거치대 등 다양한 작품을 제작하는 수업으로 진행되고 있다. 완성된 작품을 활용하여 오는 10월 전시회를 진행할 예정이다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN0006.jpg" aria-label="사진 크게 보기: 노인일자리 간담회 진행"><img src="img/BIN0006.jpg" alt="노인일자리 간담회 진행" loading="lazy"></button><div class="card-body"><h4>노인일자리 간담회 진행</h4><p>노인일자리 활동 점검 및 모니터링을 매월 진행하고 있으나 코로나19로 인해 참여자 전원 모임이 어려워 가림판 설치, 거리두기, 마스크착용, 손 소독 등 방역수칙을 철저히 지켜 매월 간담회를 진행하고 있다. 현재 노인일자리 참여자들은 비대면 수칙을 철저히 지키며 도시락배달, 관내 환경미화에 참여하고 있다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN0008.jpg" aria-label="사진 크게 보기: 한부모자조모임 당당맘스토리"><img src="img/BIN0008.jpg" alt="한부모자조모임 당당맘스토리" loading="lazy"></button><div class="card-body"><h4>한부모자조모임 당당맘스토리</h4><p>여성한부모 자조모임 및 연합활동으로 서울시한부모가족지원센터의 지원으로 운영된다. 월 1회 자조모임으로 감정코칭 교육, 문화체험활동, 덕수궁 야행투어, 마스크걸이 비즈공예, 손뜨게수세미 만들기 나눔, 독서활동을 진행하였으며 자조모임 활성화 및 한부모가족의 역량강화 프로그램으로 운영하고 있다.</p></div></article></div></section><section class="sec" id="news-case" data-group="화보NEWS"><header class="sec-head"><div class="kicker"><span>화보NEWS 2</span><span class="pg">지면 9</span></div><h2>사례팀 소식</h2></header><div class="cards"><article class="card"><button class="ph" type="button" data-full="img/BIN0009.jpg" aria-label="사진 크게 보기: 상봉1동 민관협력사업 「또 하나의 가족, 송아리 가족봉사단」"><img src="img/BIN0009.jpg" alt="상봉1동 민관협력사업 「또 하나의 가족, 송아리 가족봉사단」" loading="lazy"></button><div class="card-body"><h4>상봉1동 민관협력사업 「또 하나의 가족, 송아리 가족봉사단」</h4><p>상반기 송아리가족봉사단 활동이 4월부터 6월까지 월 1회씩 총 3회기 진행되었다. 4월 24일 발대식 및 밑반찬 나눔, 5월 29일 온라인으로 개최된 서울장미축제를 기념하며 꽃다발과 밑반찬 전달 행사를 진행했다. 6월 19일에는 여름 더위 극복을 위한 삼계탕과 과일을 전달했다. 올해부터는 봉사단이 어르신들에게 마음을 담아 직접 작성한 손 편지를 함께 전달하며 더욱 돈독한 관계를 맺고 있다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN000A.jpg" aria-label="사진 크게 보기: 복지관 자원연계 및 후원품 지원"><img src="img/BIN000A.jpg" alt="복지관 자원연계 및 후원품 지원" loading="lazy"></button><div class="card-body"><h4>복지관 자원연계 및 후원품 지원</h4><p>도움이 필요한 지역주민들을 위해 상담을 통하여 욕구를 파악하고 그에 맞는 자원을 연계하였다. 초록우산 어린이재단의 교육비 및 치료비 지원, 푸르메재단 심리치료 지원 사업, 중랑구 희망온돌 따뜻한 겨울나기 사업 성금 지원을 통해 임차보증금을 지원하였다. 또한 어버이날 식품키트 지원, 장애인의 날 햇김치 지원, 코로나 극복을 위한 kt&amp;g상상나눔 키트를 전달하여 지역주민들에게 힘이 될 수 있었다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN000B.jpg" aria-label="사진 크게 보기: 중화1동 민관협력사업 「이웃만들기」"><img src="img/BIN000B.jpg" alt="중화1동 민관협력사업 「이웃만들기」" loading="lazy"></button><div class="card-body"><h4>중화1동 민관협력사업 「이웃만들기」</h4><p>이웃만들기 사업이 2021년 3월에 시작하여 70대 이상 홀몸어르신 가정에 떡 케이크와 선물을 제공하고 있다. 홀로 생일을 보내시는 어르신에게 생일축하노래를 불러드리면 쑥스러워 하지만 입가에 미소를 띄우며 같이 박수를 치며 기뻐하였다. ‘생일도 모르고 지나가는데 누군가와 같이 보내니 행복한 생일이 되었다’며 소감을 이야기 하였다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN000C.jpg" aria-label="사진 크게 보기: 2020 꿈을주는과일 독후감 대회 시상"><img src="img/BIN000C.jpg" alt="2020 꿈을주는과일 독후감 대회 시상" loading="lazy"></button><div class="card-body"><h4>2020 꿈을주는과일 독후감 대회 시상</h4><p>4월 22일 꿈을주는 과일 재단에서 진행하는 독후감 대회에서 본 기관의 아동 3명이 우수상을 수상하였다. 코로나19로 인하여 기관에서 상장 및 상금 전달식을 진행하였으며 우수하게 독후감을 작성한 아동들을 격려하는 시간이 되었다. 아동들은 상장과 상금을 받는 것에 기뻐하며 앞으로 열심히 참여 하겠다는 의지를 보였다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN000D.jpg" aria-label="사진 크게 보기: 서울형 자산형성지원사업 3월‧6월 가족관계증진프로그램"><img src="img/BIN000D.jpg" alt="서울형 자산형성지원사업 3월‧6월 가족관계증진프로그램" loading="lazy"></button><div class="card-body"><h4>서울형 자산형성지원사업 3월‧6월 가족관계증진프로그램</h4><p>서울형 자산형성지원사업 참여자 중 각 45가정을 대상으로 가족관계 증진프로그램이 진행되었다. 코로나19 감염 확산 방지차원에서 비대면 방식으로 진행되었으며, 3월은 ‘수제청 만들기’. 6월은 ‘밀키트 활동’으로 가족들과 함께 각 가정에서 즐거운 시간을 보냈다. 활동 후 진행한 만족도 조사 결과를 반영하여, 알찬 주제로 9월, 11월에도 계속될 예정이다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN000E.jpg" aria-label="사진 크게 보기: 희망두배 청년통장 자조모임 ‘너나들이’"><img src="img/BIN000E.jpg" alt="희망두배 청년통장 자조모임 ‘너나들이’" loading="lazy"></button><div class="card-body"><h4>희망두배 청년통장 자조모임 ‘너나들이’</h4><p>중랑구 희망두배청년통장 참여자들과 함께하는 자조모임 ‘너나들이’는 올해에도 다양하고, 신선한 주제들로 진행되었다. 2월 사전모임을 시작으로, 3월에는 ‘마크라메 체험’, 4월은 ‘마리모 만들기’, 5월은 ‘어버이날 꽃바구니 만들기’, 6월은 ‘모기퇴치용품 만들기’, 7월과 8월은 ‘ZOOM으로 함께 요리하기’로 진행하였다. ‘너나들이’는 하반기에도 계속될 예정이다.</p></div></article></div></section><section class="sec" id="news-community" data-group="화보NEWS"><header class="sec-head"><div class="kicker"><span>화보NEWS 3</span><span class="pg">지면 10</span></div><h2>지역복지팀 소식</h2></header><div class="cards"><article class="card"><button class="ph" type="button" data-full="img/BIN0042.jpg" aria-label="사진 크게 보기: 3기 대학생 서포터즈 ‘다솜단’ 발대식"><img src="img/BIN0042.jpg" alt="3기 대학생 서포터즈 ‘다솜단’ 발대식" loading="lazy"></button><div class="card-body"><h4>3기 대학생 서포터즈 ‘다솜단’ 발대식</h4><p>7월 19일 제 3기 대학생 서포터즈 다솜단 발대식이 진행되었다. 다솜단은 ‘나를 빛내주는 다솜단 서포터즈, 밝은 빛으로 따뜻한 세상 만들기’라는 다짐으로 다양하고 창의적인 아이디어를 수립하여 지역주민들에게 희망과 용기, 행복을 찾도록 하는 것을 활동 목적으로 하고 있다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN0043.jpg" aria-label="사진 크게 보기: 마을공동체활성화사업 ‘작은영화관’ 운영"><img src="img/BIN0043.jpg" alt="마을공동체활성화사업 ‘작은영화관’ 운영" loading="lazy"></button><div class="card-body"><h4>마을공동체활성화사업 ‘작은영화관’ 운영</h4><p>신내종합사회복지관 1층에 위치한 카페153에서는 작은영화관을 운영하고 있다. 작은영화관은 지역의 주민들이 외출과 문화생활이 위축되는 현 상황에서 코로나블루 현상을 해소하고자, 지역 주민 누구나 1~4인이 모여 이용할수 있는 소규모 문화콘텐츠이다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN001B.jpg" aria-label="사진 크게 보기: 2021년 사회복지 하계실습 진행"><img src="img/BIN001B.jpg" alt="2021년 사회복지 하계실습 진행" loading="lazy"></button><div class="card-body"><h4>2021년 사회복지 하계실습 진행</h4><p>사회복지학과 학생들을 대상으로 사회복지사로서의 전문성과 역량을 강화하기 위해 7월 12일부터 8월 6일까지 한 달간 사회복지 하계실습이 진행되었다. 복지관의 3대 기능사업의 이해와 행정, 후원, 홍보 콘텐츠 제작 등 전문적인 교육을 실시하였으며, 사전 코로나19 검사 및 개인 방역을 준수하여 실습 진행에 만전을 기하였다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN0044.jpg" aria-label="사진 크게 보기: 제 41회 장애인의 날 맞이 「햇김치 나눔 행사」"><img src="img/BIN0044.jpg" alt="제 41회 장애인의 날 맞이 「햇김치 나눔 행사」" loading="lazy"></button><div class="card-body"><h4>제 41회 장애인의 날 맞이 「햇김치 나눔 행사」</h4><p>4월 20일 제 41회 장애인의 날을 맞이하여 햇김치 나눔 행사를 진행하였다. 장애인들이 직접 김치를 담가 소외된 이웃 115명에게 나누었다. 정성이 가득 담긴 김치를 나누며 장애인의 날의 의미를 새길 수 있었다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN0045.jpg" aria-label="사진 크게 보기: 코로나19 극복 「KT&amp;G 상상나눔 키트」 지원"><img src="img/BIN0045.jpg" alt="코로나19 극복 「KT&amp;G 상상나눔 키트」 지원" loading="lazy"></button><div class="card-body"><h4>코로나19 극복 「KT&amp;G 상상나눔 키트」 지원</h4><p>6월 KT&amp;G 북서울본부의 후원을 받아 지역 내 취약계층 87명에게 간편 조리 식품 키트를 지원하였다. 코로나19의 장기화로 경제적 어려움을 겪고 있는 지역 주민의 결식 예방과 경제적 부담감을 해소할 수 있었으며 안부 인사와 함께 따뜻한 마음을 전하는 시간이었다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN002E.jpg" aria-label="사진 크게 보기: 2021년 1분기 중랑구청 우수 자원봉사자 표창-조미영 봉사자"><img src="img/BIN002E.jpg" alt="2021년 1분기 중랑구청 우수 자원봉사자 표창-조미영 봉사자" loading="lazy"></button><div class="card-body"><h4>2021년 1분기 중랑구청 우수 자원봉사자 표창-조미영 봉사자</h4><p>중랑구청(류경기 구청장)은 2021년 1분기를 맞아 우수 자원봉사자 표창장 수여식을 진행하였다. 본 기관의 조미영 봉사자는 2019년 1월부터 2020년 11월까지 매주 월요일 마다 경로식당에 봉사의 손길을 이어 왔다. “어르신들에게 즐거움을 주기 위해”라는 봉사자의 마음가짐이 우수 자원봉사자 표창이라는 뜻 깊은 결실을 맺었다.</p></div></article></div></section><section class="sec" id="news-admin" data-group="화보NEWS"><header class="sec-head"><div class="kicker"><span>화보NEWS 4</span><span class="pg">지면 11</span></div><h2>운영지원팀 · 애원희망홈 소식</h2></header><div class="cards"><article class="card"><button class="ph" type="button" data-full="img/BIN0029.jpg" aria-label="사진 크게 보기: 신내종합사회복지관 피난안내도 설치"><img src="img/BIN0029.jpg" alt="신내종합사회복지관 피난안내도 설치" loading="lazy"></button><div class="card-body"><h4>신내종합사회복지관 피난안내도 설치</h4><p>신내종합사회복지관에서는 이용자와 지역주민, 직원들이 화재 및 재난 · 재해 시 안전하게 대피할 수 있도록 대피로 · 소화기 및 방화문 위치, 대피요령 등을 담고 있는 피난안내도를 설치하였으며, 각 층별로 보기 좋은 곳에 설치하여 긴급상황 시 누구나 쉽게 피난경로를 확인할 수 있도록 설치하였다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN002A.jpg" aria-label="사진 크게 보기: 2021년 상반기 소방훈련"><img src="img/BIN002A.jpg" alt="2021년 상반기 소방훈련" loading="lazy"></button><div class="card-body"><h4>2021년 상반기 소방훈련</h4><p>6월 30일 복지관 직원 및 이용자, 봉화 어린이집, 지역주민들의 참여하에 상반기 소방훈련을 실시하였다. 훈련은 시청각교육 및 화재 시 대피훈련, 소화기 및 투척용 소화기 실습 등으로 구성하였으며, 개인방역을 준수하여 안전하게 소방훈련을 진행하였다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN002B.jpg" aria-label="사진 크게 보기: 관내 환경개선실시"><img src="img/BIN002B.jpg" alt="관내 환경개선실시" loading="lazy"></button><div class="card-body"><h4>관내 환경개선실시</h4><p>6월 신내종합사회복지관에서는 지역주민과 이용자들이 깔끔하고 쾌적한 환경속에서 복지관을 이용할 수 있도록 자체내부 환경개선을 실시하였다. 기존 오래된 계단타일과 난간 등의 공사를 진행하여 교체 및 도색을 하였고, 직원들이 자체내부 청소를 실시하여 프로그램실과 강당, 로비 등 환경개선을 실시하였다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN002C.jpg" aria-label="사진 크게 보기: 복지관 코로나방역 실시"><img src="img/BIN002C.jpg" alt="복지관 코로나방역 실시" loading="lazy"></button><div class="card-body"><h4>복지관 코로나방역 실시</h4><p>코로나19가 장기화됨에 따라 신내종합사회복지관에서는 코로나 방역 업체와 계약하여 직원과 이용자, 지역주민들을 코로나 바이러스로부터 안전한 환경을 제공하기 위해 월 2회 철저히 방역을 실시하고 있다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN001C.jpg" aria-label="사진 크게 보기: 2/4분기 노사협의회 실시"><img src="img/BIN001C.jpg" alt="2/4분기 노사협의회 실시" loading="lazy"></button><div class="card-body"><h4>2/4분기 노사협의회 실시</h4><p>본 복지관에서는 분기별로 근로자의 복리 증진과 복지관의 건전한 발전을 위한 노사협의회를 실시하고 있다. 6월 11일 2/4분기 노사협의회를 실시하였으며 1분기 예산 사용 및 실적 공유, 직원고충처리위원회 안건을 공유하였다. 또한 일부 수정이 필요한 운영규정 등에 대한 논의를 진행 했다. 노사협의회에서 합의된 내용은 온/오프라인을 통해 복지관의 모든 근로자들에게 공유하였으며 앞으로도 노사 간 발전을 위해 협의를 지속해 나갈 예정이다.</p></div></article><article class="card"><button class="ph" type="button" data-full="img/BIN002D.jpg" aria-label="사진 크게 보기: 애원희망홈 일시보호실 운영"><img src="img/BIN002D.jpg" alt="애원희망홈 일시보호실 운영" loading="lazy"></button><div class="card-body"><h4>애원희망홈 일시보호실 운영</h4><p>거리 노숙인에 대한 일시보호 전담기능 운영으로 주거, 일자리, 의료지원 등 노숙인의 복지 항상을 목적으로 하고 있다. 편안한 휴식을 위한 간이침대 구비, 프라이버시 보호를 위한 블라인드 설치 등으로 이용인이 편안한 환경에서 휴식을 취할 수 있도록 운영하고 있다.</p></div></article></div></section><section class="sec" id="news-daycare" data-group="화보NEWS"><header class="sec-head"><div class="kicker"><span>화보NEWS 5</span><span class="pg">지면 12–13</span></div><h2>어린이집 소식</h2><p class="sub">애원복지재단이 운영하는 여섯 어린이집의 이야기</p></header><div class="daycare"><h3 class="dc-name">봉화 어린이집</h3><div class="mini-cards"><article class="mini"><button class="ph" type="button" data-full="img/BIN001D.jpg" aria-label="사진 크게 보기: 내 마음대로 놀이공간 정하기"><img src="img/BIN001D.jpg" alt="내 마음대로 놀이공간 정하기" loading="lazy"></button><h4>내 마음대로 놀이공간 정하기</h4><p>가고 싶은 반을 내 마음대로 정하고 일과를 보내며 스스로 새로운 재미를 찾아낸 날!</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN001E.jpg" aria-label="사진 크게 보기: 매실청 만들기"><img src="img/BIN001E.jpg" alt="매실청 만들기" loading="lazy"></button><h4>매실청 만들기</h4><p>새콤달콤 맛있는 매실청을 우리 손으로 직접 담가서 시원하고 건강한 여름을 만들어요.</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN001F.jpg" aria-label="사진 크게 보기: 조리실 환경개선 공사"><img src="img/BIN001F.jpg" alt="조리실 환경개선 공사" loading="lazy"></button><h4>조리실 환경개선 공사</h4><p>아이들을 위한 맛있는 요리가 만들어지는 조리실이 깨끗하고 안전한 공간으로 변신 했어요.</p></article></div></div><div class="daycare"><h3 class="dc-name">청양 어린이집</h3><div class="mini-cards"><article class="mini"><button class="ph" type="button" data-full="img/BIN0020.jpg" aria-label="사진 크게 보기: 옐로우 데이"><img src="img/BIN0020.jpg" alt="옐로우 데이" loading="lazy"></button><h4>옐로우 데이</h4><p>노란색 마스크에 노란색 옷을 입고 룰루 랄라 사진을 찍어요.</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN0021.jpg" aria-label="사진 크게 보기: 알로하 하와이"><img src="img/BIN0021.jpg" alt="알로하 하와이" loading="lazy"></button><h4>알로하 하와이</h4><p>어린이집이 하와이로! 하와이에서 3일간의 물놀이에 신난 친구들입니다.</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN0022.jpg" aria-label="사진 크게 보기: 복고 데이"><img src="img/BIN0022.jpg" alt="복고 데이" loading="lazy"></button><h4>복고 데이</h4><p>복고 의상을 입고 어린이집에 와서 추억의 문방구, 매점 음악다방 등 옛날 놀이에 흠뻑 빠졌어요.</p></article></div></div><div class="daycare"><h3 class="dc-name">완도 어린이집</h3><div class="mini-cards"><article class="mini"><button class="ph" type="button" data-full="img/BIN0015.jpg" aria-label="사진 크게 보기: 완도수목원 체험학습"><img src="img/BIN0015.jpg" alt="완도수목원 체험학습" loading="lazy"></button><h4>완도수목원 체험학습</h4><p>친구들과 함께 수목원에서 재미있는 체험 활동도 하고 예쁜 식물들도 관찰했어요.</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN0016.jpg" aria-label="사진 크게 보기: 완도타워 봄나들이"><img src="img/BIN0016.jpg" alt="완도타워 봄나들이" loading="lazy"></button><h4>완도타워 봄나들이</h4><p>화창한 봄날 완도타워 전망대에서 멋진 바다 풍경도 보고 포토존에서 사진도 찍었어요.</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN0017.jpg" aria-label="사진 크게 보기: 우리는 꼬마요리사"><img src="img/BIN0017.jpg" alt="우리는 꼬마요리사" loading="lazy"></button><h4>우리는 꼬마요리사</h4><p>파프리카와 메추리알 등을 이용해서 영양만점 맛있는 꼬치를 만들어 보았어요.</p></article></div></div><div class="daycare"><h3 class="dc-name">초롱별 어린이집</h3><div class="mini-cards"><article class="mini"><button class="ph" type="button" data-full="img/BIN0023.jpg" aria-label="사진 크게 보기: 도자기 만들기 체험학습"><img src="img/BIN0023.jpg" alt="도자기 만들기 체험학습" loading="lazy"></button><h4>도자기 만들기 체험학습</h4><p>어린이집에서 도자기 선생님과 함께 흙으로 조물조물 모양을 만들어 문에 걸어 놓을 수 있는 ‘풍경’을 만들어 보았어요.</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN0024.jpg" aria-label="사진 크게 보기: 어린이날 파티"><img src="img/BIN0024.jpg" alt="어린이날 파티" loading="lazy"></button><h4>어린이날 파티</h4><p>어린이날을 맞이하여 커다란 선물도 받고 에어바운스도 타고 팝콘 파티도 하고 펭귄 친구들도 만나보았답니다.</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN0025.jpg" aria-label="사진 크게 보기: 에너지마루 체험학습"><img src="img/BIN0025.jpg" alt="에너지마루 체험학습" loading="lazy"></button><h4>에너지마루 체험학습</h4><p>원생들만 참여하여 안전하고 재미있게 물, 바람, 빛으로 만드는 에너지에 대해 알아 보았어요.</p></article></div></div><div class="daycare"><h3 class="dc-name">능수 어린이집</h3><div class="mini-cards"><article class="mini"><button class="ph" type="button" data-full="img/BIN0026.jpg" aria-label="사진 크게 보기: 그림책 놀이"><img src="img/BIN0026.jpg" alt="그림책 놀이" loading="lazy"></button><h4>그림책 놀이</h4><p>친구들과 함께 재미있게 읽었던 동화책의 백설공주와 일곱난장이가 되어 보았어요.</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN0027.jpg" aria-label="사진 크게 보기: 능수 원내 여름캠프"><img src="img/BIN0027.jpg" alt="능수 원내 여름캠프" loading="lazy"></button><h4>능수 원내 여름캠프</h4><p>시원한 물놀이로 더운 여름을 이겨낸 날! 친구들과 신나게 놀면서 무더위를 한방에 날려버려요.</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN0028.jpg" aria-label="사진 크게 보기: 능수 참놀이 숲놀이"><img src="img/BIN0028.jpg" alt="능수 참놀이 숲놀이" loading="lazy"></button><h4>능수 참놀이 숲놀이</h4><p>맴맴~ 시원한 숲속의 여름 매미를 찾아서 친구들과 함께 매미가 되어보았어요.</p></article></div></div><div class="daycare"><h3 class="dc-name">일성 어린이집</h3><div class="mini-cards"><article class="mini"><button class="ph" type="button" data-full="img/BIN0018.jpg" aria-label="사진 크게 보기: 우리 엄마 사세요"><img src="img/BIN0018.jpg" alt="우리 엄마 사세요" loading="lazy"></button><h4>우리 엄마 사세요</h4><p>어린이집에서 인형극 ‘우리 엄마 사세요.’를 관람하고 부모님이 우리를 위해 하는 집안일과 우리가 도와드렸던 일에 대해 발표해 보았어요.</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN0019.jpg" aria-label="사진 크게 보기: 향기가 좋아요"><img src="img/BIN0019.jpg" alt="향기가 좋아요" loading="lazy"></button><h4>향기가 좋아요</h4><p>천안 농업기술센터에 방문하여 바나나 나무, 파인애플 등 흔히 볼 수 없는 식물들을 보고 직접 로즈마리를 심어보며 식물의 소중함을 느껴보았어요.</p></article><article class="mini"><button class="ph" type="button" data-full="img/BIN001A.jpg" aria-label="사진 크게 보기: 봄꽃을 찾아봐요"><img src="img/BIN001A.jpg" alt="봄꽃을 찾아봐요" loading="lazy"></button><h4>봄꽃을 찾아봐요</h4><p>숲 체험을 가서 살랑거리는 봄바람도 느끼고 진달래, 개나리 등 봄꽃을 찾아서 계란판에 예쁜 봄꽃을 모아보았어요.</p></article></div></div></section><section class="sec" id="info-flex" data-group="신내 정보통"><header class="sec-head"><div class="kicker"><span>신내 정보통</span><span class="pg">지면 14</span></div><h2>DIY 활동을 통한 아동의 창의력 증진 및 정서지능 향상 프로그램 『창의력Flex』</h2></header><p>초등학생 4~6학년 아동을 대상으로 진행하고 있는 창의력Flex 사업은 매주 자동차 DIY 수업을 진행하였으며, 6월 ‘내 자동차 Flex’ 프로그램으로 기차 박물관 관람과 자동차 전시회를 진행하였다.</p><h3>삼청동 기차 박물관 관람</h3><p>사전에 자동차 박물관을 관람하고자 계획하였으나 코로나19가 확산하여 휴관 중인 관계로 참여 아동들과 서울시 삼청동에 위치한 기차 박물관을 다녀왔다. 기차의 역사와 부품, 기차 체험 등 기차와 관련된 다양한 경험을 눈으로 보고, 만지며 관람할 수 있는 시간이 되었다.</p><div class="gallery g3"><figure><button class="ph" type="button" data-full="img/BIN0046.jpg" aria-label="사진 크게 보기: 기차 박물관 관람"><img src="img/BIN0046.jpg" alt="기차 박물관 관람" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0047.jpg" aria-label="사진 크게 보기: 기차 박물관 관람"><img src="img/BIN0047.jpg" alt="기차 박물관 관람" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0048.jpg" aria-label="사진 크게 보기: 기차 박물관 관람"><img src="img/BIN0048.jpg" alt="기차 박물관 관람" loading="lazy"></button></figure></div><h3>신내종합사회복지관에서 열린 자동차 전시회</h3><p>매주 자동차 DIY 수업에 참여하여 아동들이 만든 작품을 신내종합사회복지관 지하강당에 전시하여 지역주민에게 뽐내보는 자동차 전시회를 진행하였다. 아동들의 창의력이 돋보이는 작품을 감상할 수 있는 시간이 되었으며, 방문한 또래 친구들을 포함한 지역주민에게 DIY 키트를 제공하여 만드는 법을 참여 아동이 직접 알려주고, 완성하여 경품을 받아 가는 이벤트를 진행하였다. 아동들이 그동안 쌓아온 실력을 발산하는 시간이 되었다.</p><div class="gallery g3"><figure><button class="ph" type="button" data-full="img/BIN0049.jpg" aria-label="사진 크게 보기: 자동차 전시회"><img src="img/BIN0049.jpg" alt="자동차 전시회" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN004A.jpg" aria-label="사진 크게 보기: 자동차 전시회"><img src="img/BIN004A.jpg" alt="자동차 전시회" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN004B.jpg" aria-label="사진 크게 보기: 자동차 전시회"><img src="img/BIN004B.jpg" alt="자동차 전시회" loading="lazy"></button></figure></div></section><section class="sec" id="info-udan" data-group="신내 정보통"><header class="sec-head"><div class="kicker"><span>신내 정보통</span><span class="pg">지면 15</span></div><h2>제과제빵 봉사학교 ‘우.단(우리는 단짝)학교’</h2><p class="sub">중화1동 민관협력사업</p></header><p>신내종합사회복지관은 중화1동 주민센터와 함께 우단학교를 진행하고 있다. 우단학교는 송곡관광고등학교, 송곡고등학교, 중화고등학교, 중랑중학교, 중화1동과 함께 협력하고 있으며 송곡관광고등학교에서 제과제빵을 만들고 그 외 학교에서 봉사를 희망하는 청소년들이 모여 중화1동에 거주하는 홀몸어르신에게 찾아가 제과제빵을 전달하고 활동을 하며 관계를 유지하는 프로그램을 의미한다.</p><h3>사전논의</h3><p>먼저 3월에 각 기관의 담당자들이 모여 사업 일정, 예산, 참여자 수 등을 정하는 회의가 진행되었다. 다들 적극적으로 회의에 참여를 하여 사업의 방향성을 맞출 수 있었다.</p><h3>프로그램 진행</h3><p>5월 15일 토요일에 O.T와 1회기를 진행하였다. 중화1동 동장님, 신내종합사회복지관 관장님이 참석하여 봉사활동을 준비하는 청소년들에게 좋은 말씀을 전달을 시작으로 프로그램이 시작되었다. 사전에 봉사활동 내용, 주의상황 등에 대해서도 배울 수 있는 시간이 되었다. 1회기에는 파운드와 에코백 꾸미기가 진행되었고, 2회기에는 쿠키와 스트링아트를 진행하였다. 봉사자는 ‘할머니, 할아버지들이 기쁘게 맞아주어 재미있는 활동을 할 수 있었다’, 어르신들은 ‘혼자 있는 시간이 많은데 이렇게 찾아와주어 맛있는 빵과 예쁜 선물(활동)을 받아 좋은 시간이 되었다’라고 소감을 이야기 하였다.</p><div class="gallery g4"><figure><button class="ph" type="button" data-full="img/BIN004C.jpg" aria-label="사진 크게 보기: 우단학교 활동"><img src="img/BIN004C.jpg" alt="우단학교 활동" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN004D.jpg" aria-label="사진 크게 보기: 우단학교 활동"><img src="img/BIN004D.jpg" alt="우단학교 활동" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN004E.jpg" aria-label="사진 크게 보기: 우단학교 활동"><img src="img/BIN004E.jpg" alt="우단학교 활동" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN004F.jpg" aria-label="사진 크게 보기: 우단학교 활동"><img src="img/BIN004F.jpg" alt="우단학교 활동" loading="lazy"></button></figure></div></section><section class="sec" id="info-meet" data-group="신내 정보통"><header class="sec-head"><div class="kicker"><span>신내 정보통</span><span class="pg">지면 16</span></div><h2>마을공동체활성화사업 ‘주민만나기’</h2></header><p>코로나19 상황으로 요즈음 여럿이 모일 수 없고, 외출과 여가활동이 위축되는 상황이 장기간 이어지고 있다. 개인화가 가속화 되고 마스크 착용이 일상이 된 이런 상황 속에서 지역사회와 어떻게 소통하고 관계를 이어나갈 수 있을지 고민이 되어 주민만나기를 시작하게 되었다. 대면 소통에 대한 우려도 있었지만 복지를 행함에 있어 주민과의 만남은 꼭 필요하기 때문에 안부를 확인하고, 복지관 서비스와 프로그램에 대한 안내를 드렸다.</p><h3>안녕하세요 : 식료품과 함께하는 주민만나기</h3><p>지역에서 후원받은 식료품을 들고 동네를 돌면서 주민들과 인사하고 대화를 나눴다. 바쁘신 분들도 있었고 우리를 알아보는 사람들도 있었다. 만나는 분들에게 인사하며 식료품을 전달했다. 복지관을 쉽게 이용할 수 있도록 우리에 대해 알리고 주민분들의 근황과 생생한 이야기를 들을 수 있었다.</p><div class="gallery g3"><figure><button class="ph" type="button" data-full="img/BIN0001.jpg" aria-label="사진 크게 보기: 식료품과 함께하는 주민만나기"><img src="img/BIN0001.jpg" alt="식료품과 함께하는 주민만나기" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0050.jpg" aria-label="사진 크게 보기: 식료품과 함께하는 주민만나기"><img src="img/BIN0050.jpg" alt="식료품과 함께하는 주민만나기" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0051.jpg" aria-label="사진 크게 보기: 식료품과 함께하는 주민만나기"><img src="img/BIN0051.jpg" alt="식료품과 함께하는 주민만나기" loading="lazy"></button></figure></div><h3>당신을 환영합니다 : 앙금플라워 떡케이크&amp;웰컴키트</h3><p>매년 신내12단지아파트에 입주하는 분들이 계신다. 이 지역에 새로 오신 분들은 아직 주변환경에 대해 잘 모를 수 있기 때문에 먼저 다가가 인사하고자 했다. 지역의 봉사자분들이 만드신 떡케이크와 생필품, 복지관에 대해 알 수 있는 소식지로 만든 웰컴키트를 들고 입주자 주민분들에게 인사하는 시간을 가졌다.</p><div class="gallery g3"><figure><button class="ph" type="button" data-full="img/BIN0052.jpg" aria-label="사진 크게 보기: 앙금플라워 떡케이크와 웰컴키트"><img src="img/BIN0052.jpg" alt="앙금플라워 떡케이크와 웰컴키트" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0053.jpg" aria-label="사진 크게 보기: 앙금플라워 떡케이크와 웰컴키트"><img src="img/BIN0053.jpg" alt="앙금플라워 떡케이크와 웰컴키트" loading="lazy"></button></figure><figure><button class="ph" type="button" data-full="img/BIN0054.jpg" aria-label="사진 크게 보기: 앙금플라워 떡케이크와 웰컴키트"><img src="img/BIN0054.jpg" alt="앙금플라워 떡케이크와 웰컴키트" loading="lazy"></button></figure></div></section><section class="sec" id="promo-1" data-group="홍보"><header class="sec-head"><div class="kicker"><span>홍보</span><span class="pg">지면 17</span></div><h2>작은영화관</h2></header><div class="promo"><div class="promo-text"><p>카페153은 지역주민들이 자유롭게 휴식과 모임을 위해 활용할 수 있는 공간으로 매주 둘째주와 넷째주 수요일, 저녁 6시부터 8시까지는 작은영화관이 운영됩니다.</p><p>작은영화관은 외부활동과 문화·여가활동이 위축되는 지금, 1~4명의 소수 인원이 영상매체를 즐길 수 있는 프로그램입니다. 벽면 한쪽을 화면으로 하여 영화, 드라마, 애니메이션, 유튜브 등 영상물을 시청할 수 있도록 하였습니다. 추후 방역 수준이 완화되는 시기에는 다과 지원을 계획하고 있습니다.</p><dl class="infobox"><div class="ib-row"><dt>일시</dt><dd>둘째주, 넷째주 수요일 18:00~20:00</dd></div><div class="ib-row"><dt>장소</dt><dd>신내종합사회복지관 1층 카페153</dd></div><div class="ib-row contact"><dt>문의</dt><dd>신내종합사회복지관 노종범 주임 ☎ 02-3499-3434</dd></div></dl></div><figure class="promo-img"><button class="ph" type="button" data-full="img/BIN0002.jpg" aria-label="사진 크게 보기: 작은영화관"><img src="img/BIN0002.jpg" alt="작은영화관" loading="lazy"></button></figure></div><div class="promo-gap"></div><header class="sec-head"><div class="kicker"><span>홍보</span></div><h2>중랑구 돌봄SOS센터 - 이동지원서비스</h2></header><p>신내종합사회복지관은 중랑구의 돌봄공백을 해소하기 위한 돌봄SOS센터 서비스 제공기관으로 선정되어 예기치 못한 일상생활의 어려움으로 인해 돌봄 서비스가 필요한 지역주민들에게 도움을 드리기 위해 노력하고 있습니다.</p><dl class="infobox"><div class="ib-row"><dt>이용 대상자</dt><dd>상봉1·2동, 중화1·2동, 신내1·2동 거주자<br>만 50세 이상 중장년, 만 65세 이상 어르신 또는 등록장애인</dd></div><div class="ib-row"><dt>서비스 내용</dt><dd>이동지원서비스: 이용자의 필수적인 외출 활동에 동행하여 이동 지원 및 업무 보조</dd></div><div class="ib-row"><dt>서비스 수가</dt><dd>1인 연간 최대 지원 금액: 1,580,000원(현금지원이 아닌 이용금액 한도)<br>수급자 및 법정 차상위 계층, 중위소득 100% 이하 가구 전액 지원, 그 외 시민 전액 본인 부담</dd></div><div class="ib-row contact"><dt>문의</dt><dd>신내종합사회복지관 양지혜 사회복지사 ☎ 02-3499-3423</dd></div></dl></section><section class="sec" id="promo-2" data-group="홍보"><header class="sec-head"><div class="kicker"><span>홍보</span><span class="pg">지면 18</span></div><h2>2021 희망온돌 위기가구지원사업</h2></header><div class="promo"><div class="promo-text"><p>신내종합사회복지관은 서울사회복지관협회, 서울사회복지공동모금회와 함께 갑작스런 사회적 위험으로 일상생활 유지가 어려운 가정에 위기상황 해소와 가정해체예방을 위한 긴급지원 사업을 진행하고 있습니다.</p><dl class="infobox"><div class="ib-row"><dt>이용대상자</dt><dd>상봉1·2동, 중화1·2동에 거주하며 긴급지원이 필요한 주민</dd></div><div class="ib-row"><dt>서비스내용</dt><dd>1인 최대 100만원<br>생계비, 주거비, 의료비, 기타긴급비<br>기금배분위원회를 통해 지원여부 결정</dd></div><div class="ib-row contact"><dt>문의</dt><dd>신내종합사회복지관 유지나 주임 ☎ 02-3499-3421</dd></div></dl></div><figure class="promo-img tall"><button class="ph" type="button" data-full="img/BIN0055.jpg" aria-label="사진 크게 보기: 희망온돌 위기가구지원사업 안내 포스터"><img src="img/BIN0055.jpg" alt="희망온돌 위기가구지원사업 안내 포스터" loading="lazy"></button></figure></div><div class="promo-gap"></div><header class="sec-head"><div class="kicker"><span>홍보</span></div><h2>작은도서관 「맘편한공부방」</h2></header><p>신내종합사회복지관 3층에는 주민분들의 독서문화 생활을 위해 작은도서관 맘편한공부방을 운영하고 있습니다. 다양한 도서를 구비하고자 일정기간 동안 본 복지관 블로그를 통해 구입 도서를 추천 받고 있습니다. 또한 독서동아리 ‘북잇수다’와 독서연계활동 프로그램 ‘북탐사대’를 운영하고 있습니다.</p><dl class="infobox"><div class="ib-row"><dt>이용대상자</dt><dd>지역주민 누구나</dd></div><div class="ib-row"><dt>서비스내용</dt><dd>독서 활동 공간 제공<br>독서 활동 프로그램 ‘북잇수다’, ‘북탐사대’</dd></div><div class="ib-row contact"><dt>문의</dt><dd>신내종합사회복지관 김다경 사회복지사 ☎ 02-3499-3453</dd></div></dl></section><section class="sec" id="people" data-group="함께하는 사람들"><header class="sec-head"><div class="kicker"><span>함께하는 사람들</span><span class="pg">지면 19</span></div><h2>정직한 진료, 따뜻한 나눔 「삼송한의원」</h2><p class="sub">24년, 진료인생과 나눔을 말하다. 박철 원장</p></header><figure class="wide"><button class="ph" type="button" data-full="img/BIN0011.jpg" aria-label="사진 크게 보기: 삼송한의원 박철 원장과 직원들"><img src="img/BIN0011.jpg" alt="삼송한의원 박철 원장과 직원들" loading="lazy"></button></figure><div class="qa"><div class="qa-item"><p class="q"><b>Q</b>자기소개와 함께, 신내종합사회복지관을 어떻게 처음 접하게 되었는지 말씀 부탁드립니다.</p><p class="a"><b>A</b>안녕하세요. 노원구 공릉동에서 24년째 한의원을 운영하고 있는 박철 원장입니다. 신내종합사회복지관에 나눔을 시작하기 이전에 성동종합사회복지관에도 나눔을 실천하고 있었습니다. 근무하던 직원분과 연을 이어가던 중 복지관을 소개해 주셔서 접하게 되었습니다.</p></div><div class="qa-item"><p class="q"><b>Q</b>말씀하신대로 우리 복지관 외에도 지역 내 여러 복지기관에 나눔을 실천하고 있는 것으로 알고 있는데, 어떠한 계기로 나눔을 시작하게 되었나요?</p><p class="a"><b>A</b>개원 초기에 진료 외적으로도 ‘사회에 보탬이 될 수 있는 길이 없을까?’ 고민하던 중에 마침 어떤 환자분께서 다른 복지관의 부관장이신 루까수녀님을 소개해주셨고 수녀님과 함께 고민을 나누다가 기부활동을 접하게 되었습니다. 이를 계기로 나눔을 시작하게 되었습니다. 그 복지관을 소개해 주셨던 환자분께서 신내종합사회복지관도 소개해 주셨습니다.</p></div><div class="qa-item"><p class="q"><b>Q</b>온라인을 통해 “3세대가 10년간 다니는 한의원”이라는 인상적인 리뷰를 접할 수 있었는데, 한의원을 내방하는 환자분들을 응대하는데 있어 중요하게 여기는 부분이 있나요?</p><p class="a"><b>A</b>환자 한 분, 한 분 사심 없이 진료한 것을 좋게 봐주신 듯합니다. 개인적으로는 병원들이 특화, 특수치료 같은 것들을 추구하면서 마음 놓고 갈 수 있는 병원들의 설 곳이 적어져 안타까웠습니다. 하여 마음 편히, 부담 없이 내원할 수 있는 한의원이 되자는 목표로 운영하고 있습니다.</p></div><div class="qa-item"><p class="q"><b>Q</b>힘든 상황에서도 항상 기부를 실천하고 계신데, 어떤 마음으로 실천하고 있나요?</p><p class="a"><b>A</b>복지관에서 애쓰시는 직원 분들과 자원봉사자 분들에 비하면 그저 제가 할 수 있는 범위에서 한 손 거들고자 했을 뿐입니다. 함께 사는 우리 동네가 밝아지는데 일조할 수 있다면 그것으로 충분합니다. 감사합니다.</p></div></div><p class="place"><strong>삼송한의원</strong> 서울특별시 노원구 동일로 1078, 2층(7호선 공릉역 1번출구) ☎ 02-978-8041</p></section><section class="sec" id="support" data-group="함께하는 사람들"><header class="sec-head"><div class="kicker"><span>함께하는 사람들</span><span class="pg">지면 20</span></div><h2>지역의 건강한 변화, 후원자님이 있어 가능합니다</h2></header><div class="donors"><details class="donor-group" open><summary><span>개인</span><em>99곳·명</em></summary><p class="names"><span>강영희A</span> <span>강영희B</span> <span>강한솔</span> <span>강향</span> <span>고기쁨</span> <span>기웅</span> <span>길자희</span> <span>김경숙</span> <span>김경진</span> <span>김명숙</span> <span>김미연</span> <span>김민경</span> <span>김민자</span> <span>김민재</span> <span>김선기</span> <span>김수겸</span> <span>김수빈</span> <span>김순한</span> <span>김연우</span> <span>김영숙</span> <span>김옥남</span> <span>김유리</span> <span>김점수</span> <span>김정원</span> <span>김지훈</span> <span>김진섭</span> <span>김진호</span> <span>김태영</span> <span>김학운</span> <span>김현수</span> <span>김현우</span> <span>김현우</span> <span>김환성</span> <span>남광희</span> <span>남석하</span> <span>노종범</span> <span>최경남</span> <span>박경무</span> <span>박밤호</span> <span>박순진</span> <span>박지선</span> <span>박지영</span> <span>백연선</span> <span>백화영</span> <span>서지연</span> <span>손재윤</span> <span>신승연</span> <span>신영애</span> <span>신혜경</span> <span>안병호</span> <span>안서혁</span> <span>안지혁</span> <span>양지혜</span> <span>오선애</span> <span>유경현</span> <span>김현수A</span> <span>김현수B</span> <span>유인석</span> <span>유재형</span> <span>유정우</span> <span>유지나</span> <span>유지예</span> <span>유춘자</span> <span>윤문석</span> <span>윤성미</span> <span>윤희자</span> <span>이노민</span> <span>이다성</span> <span>이상모</span> <span>이상범</span> <span>이수민</span> <span>이승환</span> <span>이용주</span> <span>이원기</span> <span>이정규</span> <span>임재인</span> <span>장은미</span> <span>전서현</span> <span>전순영</span> <span>전진희</span> <span>정성민</span> <span>정수연</span> <span>정은지</span> <span>정인희</span> <span>정지혜</span> <span>조남이</span> <span>조순구</span> <span>조은혜</span> <span>진윤선</span> <span>천바우나</span> <span>최린</span> <span>최성애</span> <span>최정영</span> <span>최진숙</span> <span>최현진</span> <span>한종병</span> <span>한혜진</span> <span>허동순</span> <span>홍연서</span></p></details><details class="donor-group" open><summary><span>단체</span><em>26곳·명</em></summary><p class="names"><span>국민은행신내동지점</span> <span>대천회</span> <span>대한항공은빛날개후원회</span> <span>레젼드피자</span> <span>빅스엔팬클럽</span> <span>사랑의전화복지재단</span> <span>사회복지공동모금회</span> <span>상봉칼국수</span> <span>서울우유협동조합</span> <span>세일여행사</span> <span>아름다운가게</span> <span>애원시니어대학교</span> <span>엠이씬인더스트리</span> <span>용평리조트</span> <span>장수만세</span> <span>재단법인천정</span> <span>정맨콤비나프리마켓</span> <span>중앙대학교</span> <span>초록우산어린이재단</span> <span>카카오같이가치</span> <span>트루폭시</span> <span>한부모가족지원센터</span> <span>한국마사회</span> <span>한국마사회_중랑지사</span> <span>한국사회복지관협회</span> <span>이젠컴퓨터학원</span></p></details><details class="donor-group" open><summary><span>십시일반 사랑의저금통</span><em>43곳·명</em></summary><p class="names"><span>CU중화역점</span> <span>김밥나라</span> <span>나들가게엘지슈퍼</span> <span>다비치안경망우사거리점</span> <span>닥터당구장</span> <span>달콤제빵소</span> <span>대명마트</span> <span>더브럼마트</span> <span>도토리반찬</span> <span>동대문닭한마리</span> <span>동부고려제과</span> <span>동성스튜디오</span> <span>레드페이스묵동점</span> <span>맨시니스커피</span> <span>먹골김밥</span> <span>박가네뼈다귀감자탕</span> <span>보리곳간</span> <span>볼모아당구장</span> <span>봉구스밥버거중화점</span> <span>봉화신세계약국</span> <span>소문난부대찌개</span> <span>수유리우동집봉화산역점</span> <span>숨쉬는항아리</span> <span>신내동우체국</span> <span>신내점핑다이어트</span> <span>신선한우촌</span> <span>에센브르먹골역점</span> <span>옛날순대국</span> <span>왕건고기촌</span> <span>유기택피자</span> <span>장안칼국수</span> <span>정우약국</span> <span>차이나타운중화요리</span> <span>청기와감자탕</span> <span>최가네즉석김밥</span> <span>치킨과사람들</span> <span>크로바마트</span> <span>큰집닭강정신내점</span> <span>타워약국</span> <span>하모니마트</span> <span>파리바게트신내중앙점</span> <span>포트오브모카</span> <span>홍상희동물병원</span></p></details><details class="donor-group" open><summary><span>우리동네 히어로마켓</span><em>15곳·명</em></summary><p class="names"><span>E마트상봉점</span> <span>고로케쿡신내점</span> <span>동대문닭한마리</span> <span>먹골김밥</span> <span>미향반찬</span> <span>민속떡집</span> <span>옛날순대국</span> <span>장안칼국수</span> <span>춘향골남원추어탕</span> <span>충남기름집</span> <span>피자알볼로신내점</span> <span>삼송한의원</span> <span>(주)승리알곡유통</span> <span>유기택피자중랑점</span> <span>에센브르먹골역점</span></p></details></div><h3>2021년 상반기 후원금 사용내역</h3><p class="note">기간 : 2021년 1월 ~ 2021년 6월 · 단위 : 원</p><div class="tbl"><table><thead><tr><th>시설명</th><th>구분</th><th class="num">수입금액</th><th class="num">지출금액</th><th>사용내역</th></tr></thead><tbody>
+<tr><td>사회복지법인 애원복지재단</td><td>민간단체 및 기부후원금</td><td class="num">47,682,108</td><td class="num">47,682,108</td><td>시설운영 전출금 및 사업비 등</td></tr>
+<tr><td rowspan="2">신내종합사회복지관</td><td>비지정후원금</td><td class="num">21,478,900</td><td class="num">1,908,070</td><td>저소득층 복지사업 사용</td></tr>
+<tr><td>지정후원금</td><td class="num">45,587,106</td><td class="num">32,839,127</td><td>아동, 청소년, 노인, 장애인 등 지정후원금</td></tr>
+</tbody><tfoot><tr><td colspan="2">합계</td><td class="num">67,066,006</td><td class="num">34,747,197</td><td>-</td></tr></tfoot></table></div><h3>후원 자원 개발 및 연계</h3><p>나눔에서 1+1은 2가 아니라 2+α 라고 합니다. 지역 내 어려운 이웃을 위해 α의 놀라운 시너지를 함께 만들어갈 후원자 여러분을 환영합니다.</p><div class="kinds"><div class="kind"><h4>결연후원</h4><p>정기적인 후원이 필요한 대상자에게 1:1 결연을 통한 후원</p></div><div class="kind"><h4>기금후원</h4><p>사회복지사업을 위하여 정기, 비정기적 후원</p></div><div class="kind"><h4>온라인후원</h4><p>카카오 같이가치, 크라우드 펀딩 등 신내복지관 온라인 모금함 후원</p></div><div class="kind"><h4>물품후원</h4><p>활용 가능한 생활용품, 의료용품, 식품 등 비정기적 물품 후원</p></div><div class="kind"><h4>사랑의 저금통</h4><p>지역상점 및 사업체에 저금통 비치</p></div><div class="kind"><h4>기업사회공헌</h4><p>기업의 사회공헌 활동을 체계적으로 수행하기 위한 사회복지 프로그램 연계</p></div></div><h3>후원계좌</h3><ul class="accounts"><li><span class="bank">국민은행</span><span class="acct">058-25-0012-135</span><span class="holder">사회복지법인 애원복지재단</span><button type="button" class="copy" data-copy="국민은행 058-25-0012-135">계좌 복사</button></li><li><span class="bank">국민은행</span><span class="acct">063-25-0008-961</span><span class="holder">애원신내복지관</span><button type="button" class="copy" data-copy="국민은행 063-25-0008-961">계좌 복사</button></li><li><span class="bank">우리은행</span><span class="acct">828-008251-01-101</span><span class="holder">애원신내복지관</span><button type="button" class="copy" data-copy="우리은행 828-008251-01-101">계좌 복사</button></li><li><span class="bank">농협</span><span class="acct">317-0008-6030-71</span><span class="holder">사회복지법인 애원복지재단 신내종합사회복지관</span><button type="button" class="copy" data-copy="농협 317-0008-6030-71">계좌 복사</button></li></ul></section><section class="sec" id="volunteer" data-group="함께하는 사람들"><header class="sec-head"><div class="kicker"><span>함께하는 사람들</span><span class="pg">지면 21</span></div><h2>따뜻한 서비스 · 건강한 공동체를 만들어 나갈 자원봉사자를 모집합니다!</h2></header><dl class="infobox"><div class="ib-row"><dt>활동대상</dt><dd>자원봉사를 희망하는 사람 누구나!</dd></div><div class="ib-row"><dt>자원봉사 혜택</dt><dd>봉사실적 관리 및 인증서 발급, 우수자원봉사자 표창, 자원봉사행사(보수교육, 간담회) 참여</dd></div><div class="ib-row contact"><dt>문의</dt><dd>신내종합사회복지관 ☎ 02-3421-3400</dd></div></dl><h3>활동영역</h3><div class="tbl"><table><thead><tr><th>구분</th><th>내용</th></tr></thead><tbody><tr><td>경로식당 지원</td><td>밑반찬 및 도시락 조리보조, 배달, 배식, 설거지 등</td></tr><tr><td>프로그램</td><td>아동·장애인·노인 대상 프로그램 진행 보조</td></tr><tr><td>업무지원</td><td>서류정리, 문서작성 등 복지관 행정업무 보조, 복지관 환경정리 등</td></tr><tr><td>각종행사</td><td>복지관 바자회 및 프리마켓, 지역행사 등 진행보조</td></tr></tbody></table></div><p class="note">* 기타 봉사활동 및 자세한 사항은 복지관으로 문의 해주세요.</p><h3>활동절차</h3><ol class="steps"><li><span>상담 (내방/전화)</span></li><li><span>신청서 작성</span></li><li><span>자원봉사 기초교육</span></li><li><span>봉사활동</span></li><li><span>활동일지 작성</span></li></ol><h3>신내종합사회복지관 자원봉사자</h3><p class="note">코로나19로 어려운 상황에서도 지역사회를 위해 노력해 주시는 봉사자님께 항상 감사드립니다.</p><dl class="vols"><div><dt>365서포터즈</dt><dd>이영란</dd></div><div><dt>맘편한공부방</dt><dd>이탁희</dd></div><div><dt>앙금플라워 떡케이크</dt><dd>양영랑 유진</dd></div><div><dt>온스테이</dt><dd>이지홍 김사라(김선)</dd></div><div><dt>한마음회</dt><dd>김경님 노경화 배재원 심현숙 이은주</dd></div></dl><aside class="notice"><h4>코로나19 바이러스 예방수칙 - 자원봉사자 활동 주의사항 안내</h4><p>자원봉사자님! 사회복지시설 외부인 출입관리 지침이 변경되었습니다.(‘21. 3. 3. ~) 이용 시설별 여건과 수요에 따라 사회복지시설에 자원봉사자의 출입이 허용됩니다.</p><p><b>외부인 출입에 따른 방역관리</b> 복지시설 출입일 일주일 이내의 코로나19 선제검사를 실시하여 시설 방문 시 자원봉사 담당자에게 선제검사 결과지(음성)를 제출해 주시기 바랍니다.</p></aside></section><section class="sec" id="aewon-news" data-group="애원뉴스"><header class="sec-head"><div class="kicker"><span>애원뉴스</span><span class="pg">지면 22</span></div><h2>신내종합사회복지관 소식</h2></header><div class="newslist"><section class="nl"><h3>수상</h3><ul><li>중랑구 우수 자원봉사자 표창 수상 - 노인무료급식 조미영 봉사자</li></ul></section><section class="nl"><h3>선정</h3><ul><li>서울시동부교육지원청 장애성인 평생교육 「예쁜공방」 선정</li><li>서울시동부교육지원청 지역기반형 교육복지협력사업 「온(溫)스테이」 선정</li><li>(주)롯데쇼핑, 기아대책 리조이스 「마음돌봄 프로그램」 선정</li><li>2021년 한걸음에 닿는 「동네배움터」 운영사업 선정</li></ul></section><section class="nl"><h3>지원</h3><ul><li>사단법인 희망을 나누는 사람들 생필품 지원</li><li>사단법인 한국국제기아대책기구 맘스터치 햄버거 지원</li><li>초록우산 어린이재단 태블릿 PC 지원</li><li>주식회사 지아이엘에스 생활용품 지원</li><li>아름다운 가게 화장품 지원</li><li>중랑구청 생필품 및 위생용품 지원</li><li>KT&amp;G 북서울본부 상상펀드 지원</li></ul></section><section class="nl"><h3>입·퇴사</h3><ul><li>입사: 유지민 사회복지사</li><li>퇴사: 강한솔 주임</li></ul></section></div></section><section class="sec" id="programs-2021" data-group="주요사업 안내"><header class="sec-head"><div class="kicker"><span>주요사업 안내</span><span class="pg">지면 23</span></div><h2>2021년 복지관 주요사업 안내</h2><p class="sub">29개 사업 · 사업명이나 대상으로 찾아보세요</p></header><label class="search" for="prog-q"><span>사업 찾기</span><input id="prog-q" type="search" placeholder="예: 어르신, 아동, 상담" autocomplete="off"></label><div class="programs" id="programs"><article class="prog"><h4>푸른상담실</h4><dl><div><dt>대상</dt><dd>지역주민</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>개인, 가족, 아동·청소년 심리상담 서비스 제공</p></article><article class="prog"><h4>애원시니어대학교</h4><dl><div><dt>대상</dt><dd>55세 이상</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>사회복지전공과목 및 교양과목 학기제 운영</p></article><article class="prog"><h4>작은도서관 맘편한공부방</h4><dl><div><dt>대상</dt><dd>지역주민</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>작은도서관 운영 및 지역주민 대상 독서 활동 프로그램 실시</p></article><article class="prog"><h4>장애성인 평생교육 「예쁜공방」</h4><dl><div><dt>대상</dt><dd>장애성인</dd></div><div><dt>기간</dt><dd>4월~11월</dd></div></dl><p>캘리그라피, 우드버닝교실, 작품전시회 진행</p></article><article class="prog"><h4>시각장애인점자소식지</h4><dl><div><dt>대상</dt><dd>시각장애인</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>월1회 지역 내 시각장애인에게 점자소식지 배포</p></article><article class="prog"><h4>무료이동목욕</h4><dl><div><dt>대상</dt><dd>65세 이상 어르신</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>수급자 또는 차상위계층 중 질병으로 인해 2개월 이상 와병중이거나 장애인 등급을 판정받은 자를 대상으로 가정방문 및 목욕차량을 이용한 목욕서비스제공</p></article><article class="prog"><h4>노인장기요양보험</h4><dl><div><dt>대상</dt><dd>장기요양등급 판정자</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>노인장기요양보험 등급판정자들에게 방문목욕, 방문요양 실시</p></article><article class="prog"><h4>장애인활동지원사업</h4><dl><div><dt>대상</dt><dd>활동지원 등록 장애인</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>활동보조(가사·사회·신체), 방문목욕, 차량목욕 서비스 제공</p></article><article class="prog"><h4>노인사회활동지원사업</h4><dl><div><dt>대상</dt><dd>65세 이상 기초연금수급자</dd></div><div><dt>기간</dt><dd>2월~12월</dd></div></dl><p>취약계층을 방문하여 말벗, 생활안전 점검서비스, 공공시설 지원봉사활동</p></article><article class="prog"><h4>치매예방사업 「기억하기좋은날」</h4><dl><div><dt>대상</dt><dd>60세 이상 어르신</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>원예, 두뇌훈련, 치매교육, 문화체험을 통한 치매 예방 활동 진행</p></article><article class="prog"><h4>보건의료서비스</h4><dl><div><dt>대상</dt><dd>저소득 노인·장애인</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>보건소진료, 한방진료, 가정방문케어사업</p></article><article class="prog"><h4>무료급식사업</h4><dl><div><dt>대상</dt><dd>만 60세 이상 저소득·독거노인</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>무료급식(만60세이상), 밑반찬배달사업 및 식사배달사업(만65세이상)</p></article><article class="prog"><h4>일상생활지원사업</h4><dl><div><dt>대상</dt><dd>지역사회 취약계층</dd></div><div><dt>기간</dt><dd>수시</dd></div></dl><p>난방비지원, 방역서비스, 의료보장구 대여, 이미용서비스</p></article><article class="prog"><h4>자산형성지원사업</h4><dl><div><dt>대상</dt><dd>사업 참가자</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>‘희망플러스 통장’, ‘꿈나래통장’, ‘청년통장’ 참가자에게 사례관리, 금융교육, 자조모임, 자원연계 등 다양한 복지서비스 제공</p></article><article class="prog"><h4>사회교육</h4><dl><div><dt>대상</dt><dd>지역사회 주민(성인·아동)</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>성인 사회교육(피아노) 및 아동 사회교육(피아노, 영어, 미술) 실시</p></article><article class="prog"><h4>자동차DIY활동 프로그램 「창의력Flex」</h4><dl><div><dt>대상</dt><dd>초등학생 4-6학년</dd></div><div><dt>기간</dt><dd>20년 8월~21년 7월</dd></div></dl><p>자동차DIY교육 활동 및 전시장 관람, 미래 자동차 전시회 진행</p></article><article class="prog"><h4>교육복지협력사업 「온(On-溫)스테이」</h4><dl><div><dt>대상</dt><dd>초등학생 1-3학년 자녀 가정</dd></div><div><dt>기간</dt><dd>4월~12월</dd></div></dl><p>자녀 푸드아트테라피 수업, 가족 활동, 네트워크 회의 진행</p></article><article class="prog"><h4>한부모가족지원사업 「당당맘 스토리」</h4><dl><div><dt>대상</dt><dd>한부모여성가장</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>한부모여성가장가족의 가족애 증진프로그램, 자조모임 등</p></article><article class="prog"><h4>희망온돌 위기가구지원사업</h4><dl><div><dt>대상</dt><dd>상봉·중화동 위기·취약계층</dd></div><div><dt>기간</dt><dd>6월~12월</dd></div></dl><p>주거비, 의료비, 생계비, 기타 긴급비 지원</p></article><article class="prog"><h4>민·관 협력사업(상봉1동, 중화1동)</h4><dl><div><dt>대상</dt><dd>지역주민</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>민관이 협력하여 지역주민들에게 다양한 맞춤형 서비스를 제공</p></article><article class="prog"><h4>히어로마켓</h4><dl><div><dt>대상</dt><dd>기부업체</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>지역 내 기부업체와 협약하여 그 고유서비스를 취약계층에 연계</p></article><article class="prog"><h4>마을공동체활성화사업</h4><dl><div><dt>대상</dt><dd>지역주민</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>지역주민 스스로 마을의 주인이 되어 마을을 돌보며 마을공동체를 구축</p></article><article class="prog"><h4>평생학습사업</h4><dl><div><dt>대상</dt><dd>지역주민</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>지역주민의 삶의 질 향상을 위한 다양한 평생교육 프로그램 운영(환경보호실천 교육 및 동아리, 쏙쏙 동네배움터, 한글교실 기초반, 고급반)</p></article><article class="prog"><h4>공간개방사업</h4><dl><div><dt>대상</dt><dd>지역주민·단체</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>복지관의 공간 이용을 희망하는 지역주민 및 동아리 등에 프로그램실 대관 지원</p></article><article class="prog"><h4>실습지도사업</h4><dl><div><dt>대상</dt><dd>전공 실습생</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>사회복지학과 학생 현장실습, 실무이해 및 사회복지 현장 경험을 통해 자질향상. 중앙대 적십자 간호대학과 협약, 간호대학생 현장실습 연계</p></article><article class="prog"><h4>「뉴노멀시대보고서」</h4><dl><div><dt>대상</dt><dd>본 기관 실무자, 중학생</dd></div><div><dt>기간</dt><dd>20년 9월~21년 5월</dd></div></dl><p>뉴노멀 시대를 맞이하여 디지털콘텐츠 제작‧활용 교육, 영상 제작 활동, ‘우리동네 설명서’ 제작 및 제작발표회 실시</p></article><article class="prog"><h4>비상용여성용품비치사업</h4><dl><div><dt>대상</dt><dd>지역주민</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>복지관 3층 여자화장실 내 무료생리대자판기 운영, 사각지대여성 생리대 지원</p></article><article class="prog"><h4>리조이스 마음돌봄프로그램</h4><dl><div><dt>대상</dt><dd>20~50대 여성</dd></div><div><dt>기간</dt><dd>4월~6월</dd></div></dl><p>집단상담, 감정코칭, 미술치료, 우울 인식개선 교육 진행</p></article><article class="prog"><h4>돌봄SOS센터 이동지원서비스</h4><dl><div><dt>대상</dt><dd>만 50세 이상, 만 65세 이상 어르신 또는 장애인</dd></div><div><dt>기간</dt><dd>연중</dd></div></dl><p>거동이 불편하거나 이동이 어려운 이용자의 외출, 이동지원(상봉 1·2동, 중화 1·2동, 신내 1·2동 이동지원서비스 제공)</p></article></div><p class="empty" id="prog-empty" hidden>찾는 사업이 없습니다. 다른 낱말로 찾아보세요.</p></section>
+
+  <footer class="colophon" id="colophon">
+    <div>
+      <h2>애원복지</h2>
+      <p><b>통권</b> 제50호 · 가을호 &nbsp; <b>발행일</b> 2021. 9. 1.</p>
+      <p><b>발행인</b> 김상균 &nbsp; <b>편집인</b> 전순영</p>
+      <p><b>편집위원</b> 서지연 이승환 김다경 양지혜 김지훈 김진호 이상철</p>
+    </div>
+    <div>
+      <p><b>발행처</b> 사회복지법인 애원복지재단</p>
+      <p>서울시 중구 서애로17(필동3가) · Tel 02-713-7869</p>
+      <p><b>신내종합사회복지관</b></p>
+      <p>서울시 중랑구 봉화산로153(상봉동) · Tel 02-3421-3400</p>
+      <p><a href="http://www.snwc.or.kr" target="_blank" rel="noopener">www.snwc.or.kr</a> · <a href="https://blog.naver.com/sinwelfare3400" target="_blank" rel="noopener">blog.naver.com/sinwelfare3400</a></p>
+    </div>
+  </footer>
+</main>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="사진 크게 보기"><img id="lb-img" alt=""><button type="button" id="lb-close">닫기</button></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function () {
+  // 표지 낙엽 (한 번만 그림)
+  var cv = document.getElementById('leaves');
+  function drawLeaves() {
+    var r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    cv.width = r.width * dpr; cv.height = r.height * dpr;
+    var c = cv.getContext('2d'); c.scale(dpr, dpr);
+    var seed = 50; function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    var cols = ['#d9662f', '#e9a23b', '#c2412b', '#8e9b3a', '#f0c25a', '#b5532c'];
+    var hill = r.height * 0.62;
+    c.globalAlpha = .9;
+    for (var i = 0; i < 26; i++) {
+      var x = r.width * (0.45 + rnd() * 0.55), y = rnd() * r.height * 0.75;
+      var s = 8 + rnd() * 16, a = rnd() * Math.PI * 2;
+      c.save(); c.translate(x, y); c.rotate(a); c.fillStyle = cols[i % cols.length];
+      c.beginPath(); c.moveTo(0, -s); c.quadraticCurveTo(s * .9, -s * .2, 0, s); c.quadraticCurveTo(-s * .9, -s * .2, 0, -s); c.fill();
+      c.strokeStyle = 'rgba(80,40,10,.35)'; c.lineWidth = 1; c.beginPath(); c.moveTo(0, -s * .8); c.lineTo(0, s * 1.2); c.stroke();
+      c.restore();
+    }
+  }
+  drawLeaves();
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(drawLeaves, 150); });
+
+  // 목차 열기 (휴대폰)
+  var body = document.body, btn = document.getElementById('menu-btn');
+  function setNav(open) { body.classList.toggle('nav-open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+  btn.addEventListener('click', function () { setNav(!body.classList.contains('nav-open')); });
+  document.getElementById('scrim').addEventListener('click', function () { setNav(false); });
+  document.querySelectorAll('.side a').forEach(function (a) { a.addEventListener('click', function () { setNav(false); }); });
+
+  // 지금 읽는 꼭지 표시
+  var links = {}; document.querySelectorAll('#nav a, .brand').forEach(function (a) { var id = a.getAttribute('href').slice(1); (links[id] = links[id] || []).push(a); });
+  var current = null;
+  function mark(id) { if (id === current) return; current = id; document.querySelectorAll('#nav a.on').forEach(function (a) { a.classList.remove('on'); a.removeAttribute('aria-current'); }); (links[id] || []).forEach(function (a) { if (a.closest('#nav')) { a.classList.add('on'); a.setAttribute('aria-current', 'true'); } }); }
+  var secs = Array.prototype.slice.call(document.querySelectorAll('#cover, .sec'));
+  function spy() { var y = window.innerHeight * 0.3, id = secs[0].id; secs.forEach(function (s) { if (s.getBoundingClientRect().top <= y) id = s.id; }); mark(id); }
+  window.addEventListener('scroll', spy, { passive: true }); spy();
+
+  // 글자 크기
+  var sizes = ['', 'big', 'bigger'];
+  function setSize(n) { body.classList.remove('big', 'bigger'); if (sizes[n]) body.classList.add(sizes[n]); document.querySelectorAll('.sizes button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.size == n ? 'true' : 'false'); }); try { localStorage.setItem('aewon-fs', n); } catch (e) {} }
+  document.querySelectorAll('.sizes button').forEach(function (b) { b.addEventListener('click', function () { setSize(+b.dataset.size); }); });
+  try { var saved = localStorage.getItem('aewon-fs'); if (saved) setSize(+saved); } catch (e) {}
+
+  // 사진 크게 보기
+  var lb = document.getElementById('lb'), lbi = document.getElementById('lb-img'), last = null;
+  document.addEventListener('click', function (e) { var b = e.target.closest('.ph[data-full]'); if (!b) return; last = b; lbi.src = b.dataset.full; lbi.alt = b.querySelector('img').alt; lb.hidden = false; document.getElementById('lb-close').focus(); });
+  function closeLb() { lb.hidden = true; lbi.src = ''; if (last) last.focus(); }
+  document.getElementById('lb-close').addEventListener('click', closeLb);
+  lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (!lb.hidden) closeLb(); setNav(false); } });
+
+  // 계좌 복사
+  var toast = document.getElementById('toast'), tt;
+  function say(m) { toast.textContent = m; toast.hidden = false; clearTimeout(tt); tt = setTimeout(function () { toast.hidden = true; }, 1800); }
+  document.querySelectorAll('.copy').forEach(function (b) { b.addEventListener('click', function () {
+    var t = b.dataset.copy;
+    try { navigator.clipboard.writeText(t).then(function () { say('계좌번호를 복사했습니다'); }, function () { sel(b); }); } catch (e) { sel(b); }
+  }); });
+  function sel(b) { var r = document.createRange(); r.selectNodeContents(b.parentNode.querySelector('.acct')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); say('계좌번호를 선택했습니다. 길게 눌러 복사하세요'); }
+
+  // 주요사업 찾기
+  var q = document.getElementById('prog-q');
+  if (q) q.addEventListener('input', function () { var v = q.value.trim(), n = 0; document.querySelectorAll('.prog').forEach(function (p) { var ok = !v || p.textContent.indexOf(v) > -1; p.hidden = !ok; if (ok) n++; }); document.getElementById('prog-empty').hidden = n > 0; });
+})();
+</script>
+</body></html>
